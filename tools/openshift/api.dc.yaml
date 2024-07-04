@@ -13,7 +13,7 @@ objects:
       app: "${APP_NAME}-${BRANCH}"
     name: "${APP_NAME}-${BRANCH}"
   spec:
-    #replicas: ${{MIN_REPLICAS}}
+    replicas: ${{MIN_REPLICAS}}
     selector:
       app: "${APP_NAME}-${BRANCH}"
       deploymentConfig: "${APP_NAME}-${BRANCH}"
