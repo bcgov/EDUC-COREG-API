@@ -12,7 +12,7 @@ env:
   IMAGE_TAGS: ""
 
   REPO_NAME: "educ-coreg-api"
-  BRANCH: "master"
+  BRANCH: "main"
   NAMESPACE: ${{ secrets.COREG_NAMESPACE_NO_ENV }}
 
 on:
@@ -26,13 +26,8 @@ on:
 jobs:
   openshift-ci-cd:
     name: Tag Image
-    # ubuntu-20.04 can also be used.
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     environment: dev
-
-    outputs:
-      ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
-      SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
 
     steps:
     - name: Check out repository

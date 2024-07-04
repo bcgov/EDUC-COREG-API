@@ -3,7 +3,7 @@ name: API CI
 on:
   push:
     branches:
-      - master
+      - main
       - 'feature/**'
       - 'Feature/**'
       - 'fix/*'
@@ -11,13 +11,13 @@ on:
     paths:
       - 'api/**'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - 'api/**'
 jobs:
   quality_profile:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     defaults:
       run:
@@ -51,16 +51,17 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: 'trivy-results.sarif'
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-      - name: Run Sonar Analysis
-        run: mvn sonar:sonar
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.organization=bcgov-sonarcloud
-          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+# -- sonar scans now done automatically on PR
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#      - name: Run Sonar Analysis
+#        run: mvn sonar:sonar
+#          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#          -Dsonar.host.url=https://sonarcloud.io
+#          -Dsonar.organization=bcgov-sonarcloud
+#          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}

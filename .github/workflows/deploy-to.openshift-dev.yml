@@ -29,7 +29,7 @@ env:
   APP_NAME: 'coreg-api'
   DB_NAME: 'coreg_api'
   REPO_NAME: "educ-coreg-api"
-  BRANCH: "master"
+  BRANCH: "main"
   APP_NAME_FULL: "coreg-api-master"
   NAMESPACE: ${{ secrets.COREG_NAMESPACE_NO_ENV }}
   COMMON_NAMESPACE: ${{ secrets.COMMON_NAMESPACE_NO_ENV }}
@@ -46,12 +46,12 @@ on:
   workflow_dispatch: 
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy-dev:
     name: Build and deploy to OpenShift DEV
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     environment: dev
 
     steps:
