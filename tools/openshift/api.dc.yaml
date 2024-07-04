@@ -23,7 +23,7 @@ objects:
     template:
       metadata:
         annotations:
-          openshift.io/generated-by: schoolapi
+          openshift.io/generated-by: coregapi
           prometheus.io/path: /actuator/prometheus
           prometheus.io/port: '8080'
           prometheus.io/scrape: 'true'
@@ -35,9 +35,6 @@ objects:
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${REPO_NAME}-${BRANCH}:${TAG}
           imagePullPolicy: Always
           volumeMounts:
-          - name: tls-certs
-            mountPath: "/etc/tls-certs"
-            readOnly: true
           - name: log-storage
             mountPath: /logs
           readinessProbe:
@@ -61,6 +58,11 @@ objects:
           ports:
           - containerPort: ${{CONTAINER_PORT}}
             protocol: TCP
+          envFrom:
+          - configMapRef:
+              name: "${APP_NAME}-config-map"
+          - secretRef:
+              name: "${APP_NAME}-db-secret"
           resources:
             requests:
               cpu: "${MIN_CPU}"
@@ -68,61 +70,58 @@ objects:
             limits:
               cpu: "${MAX_CPU}"
               memory: "${MAX_MEM}"
-        - image: artifacts.developer.gov.bc.ca/docker-remote/fluent/fluent-bit:1.5.7
-          name: "${APP_NAME}-${BRANCH}-fluent-bit-sidecar"
-          imagePullPolicy: Always
-          imagePullSecrets:
-            - name: artifactory-creds
-          volumeMounts:
-            - name: log-storage
-              mountPath: /mnt/log
-            - name: flb-sc-config-volume
-              mountPath: /fluent-bit/etc/
-          readinessProbe:
-            tcpSocket:
-              port: 2020
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 5
-            successThreshold: 1
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 2020
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 5
-            successThreshold: 1
-          ports:
-            - containerPort: 2020
-              protocol: TCP
-              name: metrics
-          resources:
-            requests:
-              cpu: "5m"
-              memory: "25Mi"
-            limits:
-              cpu: "10m"
-              memory: "50Mi"
+# -- Re-enable fluent bit once we have approved splunk token
+#        - image: artifacts.developer.gov.bc.ca/docker-remote/fluent/fluent-bit:1.5.7
+#          name: "${APP_NAME}-${BRANCH}-fluent-bit-sidecar"
+#          imagePullPolicy: Always
+#          imagePullSecrets:
+#            - name: artifactory-creds
+#          volumeMounts:
+#            - name: log-storage
+#              mountPath: /mnt/log
+#            - name: flb-sc-config-volume
+#              mountPath: /fluent-bit/etc/
+#          readinessProbe:
+#            tcpSocket:
+#              port: 2020
+#            initialDelaySeconds: 10
+#            periodSeconds: 30
+#            timeoutSeconds: 5
+#            failureThreshold: 5
+#            successThreshold: 1
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: 2020
+#            initialDelaySeconds: 10
+#            periodSeconds: 30
+#            timeoutSeconds: 5
+#            failureThreshold: 5
+#            successThreshold: 1
+#          ports:
+#            - containerPort: 2020
+#              protocol: TCP
+#              name: metrics
+#          resources:
+#            requests:
+#              cpu: "5m"
+#              memory: "25Mi"
+#            limits:
+#              cpu: "10m"
+#              memory: "50Mi"
         volumes:
-        - name: tls-certs
-          secret:
-            secretName: school-api-cert
         - name: log-storage
           emptyDir: {}
-        - name: flb-sc-config-volume
-          configMap:
-            name: "${APP_NAME}-flb-sc-config-map"
+# -- Re-enable fluent bit once we have approved splunk token
+#        - name: flb-sc-config-volume
+#          configMap:
+#            name: "${APP_NAME}-flb-sc-config-map"
     test: false
     triggers:
     - type: ConfigChange
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      service.alpha.openshift.io/serving-cert-secret-name: "school-api-cert"
     labels:
       app: "${APP_NAME}-${BRANCH}"
     name: "${APP_NAME}-${BRANCH}"

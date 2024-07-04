@@ -34,12 +34,12 @@ env:
   NAMESPACE: ${{ secrets.COREG_NAMESPACE_NO_ENV }}
   COMMON_NAMESPACE: ${{ secrets.COMMON_NAMESPACE_NO_ENV }}
   TAG: "latest"
-  MIN_REPLICAS_DEV: "1"
-  MAX_REPLICAS_DEV: "2"
-  MIN_CPU_DEV: "300m"
-  MAX_CPU_DEV: "500m"
-  MIN_MEM_DEV: "400Mi"
-  MAX_MEM_DEV: "800Mi"
+  MIN_REPLICAS: "1"
+  MAX_REPLICAS: "2"
+  MIN_CPU: "300m"
+  MAX_CPU: "500m"
+  MIN_MEM: "400Mi"
+  MAX_MEM: "800Mi"
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -51,12 +51,8 @@ jobs:
   build-and-deploy-dev:
     name: Build and deploy to OpenShift DEV
     # ubuntu-20.04 can also be used.
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     environment: dev
-
-    outputs:
-      ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
-      SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
 
     steps:
     - name: Check for required secrets
@@ -160,7 +156,7 @@ jobs:
         oc tag ${{ steps.push-image.outputs.registry-path }} ${{ env.REPO_NAME }}-${{ env.BRANCH }}:${{ env.TAG }}
                
         # Process and apply deployment template
-        oc process -f tools/openshift/api.dc.yaml -p APP_NAME=${{ env.APP_NAME }} -p REPO_NAME=${{ env.REPO_NAME }} -p BRANCH=${{ env.BRANCH }} -p NAMESPACE=${{ env.OPENSHIFT_NAMESPACE_DEV }} -p TAG=${{ env.TAG }} -p MIN_REPLICAS=${{ env.MIN_REPLICAS_DEV }} -p MAX_REPLICAS=${{ env.MAX_REPLICAS_DEV }} -p MIN_CPU=${{ env.MIN_CPU_DEV }} -p MAX_CPU=${{ env.MAX_CPU_DEV }} -p MIN_MEM=${{ env.MIN_MEM_DEV }} -p MAX_MEM=${{ env.MAX_MEM_DEV }} \
+        oc process -f tools/openshift/api.dc.yaml -p APP_NAME=${{ env.APP_NAME }} -p REPO_NAME=${{ env.REPO_NAME }} -p BRANCH=${{ env.BRANCH }} -p NAMESPACE=${{ env.OPENSHIFT_NAMESPACE_DEV }} -p TAG=${{ env.TAG }} -p MIN_REPLICAS=${{ env.MIN_REPLICAS }} -p MAX_REPLICAS=${{ env.MAX_REPLICAS }} -p MIN_CPU=${{ env.MIN_CPU }} -p MAX_CPU=${{ env.MAX_CPU }} -p MIN_MEM=${{ env.MIN_MEM }} -p MAX_MEM=${{ env.MAX_MEM }} \
         | oc apply -f -
         
         curl -s https://raw.githubusercontent.com/bcgov/${{ env.REPO_NAME }}/master/tools/config/update-configmap.sh | bash /dev/stdin dev ${{ env.APP_NAME }} ${{ env.NAMESPACE }} ${{ env.COMMON_NAMESPACE }} ${{ env.DB_JDBC_CONNECT_STRING }} ${{ env.DB_PWD }} ${{ env.DB_USER }} ${{ env.SPLUNK_TOKEN }}
@@ -175,5 +171,5 @@ jobs:
     - name: ZAP Scan
       uses: zaproxy/action-api-scan@v0.7.0
       with:
-        target: 'https://${{ env.APP_NAME }}-${{ env.OPENSHIFT_NAMESPACE_DEV }}-dev.apps.silver.devops.gov.bc.ca/v3/api-docs'
+        target: 'https://${{ env.APP_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}-dev.apps.silver.devops.gov.bc.ca/v3/api-docs'
 
