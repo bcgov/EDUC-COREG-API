@@ -25,7 +25,7 @@ env:
   APP_NAME: 'coreg-api'
   DB_NAME: 'coreg_api'
   REPO_NAME: "educ-coreg-api"
-  BRANCH: "main"
+  BRANCH: "master"
   NAMESPACE: ${{ secrets.COREG_NAMESPACE_NO_ENV }}
   COMMON_NAMESPACE: ${{ secrets.COMMON_NAMESPACE_NO_ENV }}
   TAG: "latest"
