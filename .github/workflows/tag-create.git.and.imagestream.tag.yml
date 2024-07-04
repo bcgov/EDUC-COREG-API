@@ -12,7 +12,7 @@ env:
   IMAGE_TAGS: ""
 
   REPO_NAME: "educ-coreg-api"
-  BRANCH: "main"
+  BRANCH: "master"
   NAMESPACE: ${{ secrets.COREG_NAMESPACE_NO_ENV }}
 
 on:
