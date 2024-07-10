@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.institute.config;
+package ca.bc.gov.educ.api.coreg.config;
 
 import lombok.AccessLevel;
 import lombok.Getter;

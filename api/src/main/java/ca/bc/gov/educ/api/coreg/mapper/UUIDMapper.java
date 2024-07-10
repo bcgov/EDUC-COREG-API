@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.institute.mapper;
+package ca.bc.gov.educ.api.coreg.mapper;
 
 import org.apache.commons.lang3.StringUtils;
 

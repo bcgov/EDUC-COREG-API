@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.institute.constants.v1;
+package ca.bc.gov.educ.api.coreg.constants.v1;
 
 /**
  * The enum Event type.

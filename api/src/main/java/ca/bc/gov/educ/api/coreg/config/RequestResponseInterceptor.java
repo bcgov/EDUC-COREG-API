@@ -1,6 +1,6 @@
-package ca.bc.gov.educ.api.institute.config;
+package ca.bc.gov.educ.api.coreg.config;
 
-import ca.bc.gov.educ.api.institute.helpers.LogHelper;
+import ca.bc.gov.educ.api.coreg.helpers.LogHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
