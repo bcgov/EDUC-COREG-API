@@ -2,11 +2,9 @@ package ca.bc.gov.educ.api.coreg.mapper.v1;
 
 import ca.bc.gov.educ.api.coreg.mapper.LocalDateTimeMapper;
 import ca.bc.gov.educ.api.coreg.mapper.StringMapper;
+import ca.bc.gov.educ.api.coreg.mapper.UUIDMapper;
 import ca.bc.gov.educ.api.coreg.model.v1.CourseAllowableCreditEntity;
-import ca.bc.gov.educ.api.coreg.model.v1.CourseCodeEntity;
 import ca.bc.gov.educ.api.coreg.struct.v1.CourseAllowableCredits;
-import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
-import ca.bc.gov.educ.api.institute.mapper.UUIDMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

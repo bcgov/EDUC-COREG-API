@@ -2,7 +2,6 @@ package ca.bc.gov.educ.api.coreg.struct.v1;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
