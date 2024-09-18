@@ -16,10 +16,8 @@ public interface GraduationProgramCoursesMapper {
 
     GraduationProgramCoursesMapper mapper = Mappers.getMapper(GraduationProgramCoursesMapper.class);
 
-    @Mapping(target = "graduationProgramRequirementEntity.gradProgramRequirementID", source = "gradProgramRequirementID")
     GraduationProgramCoursesEntity toModel(GraduationProgramCourses structure);
 
-    @Mapping(target = "gradProgramRequirementID", source = "graduationProgramRequirementEntity.gradProgramRequirementID")
     GraduationProgramCourses toStructure(GraduationProgramCoursesEntity coursesEntity);
 }
 

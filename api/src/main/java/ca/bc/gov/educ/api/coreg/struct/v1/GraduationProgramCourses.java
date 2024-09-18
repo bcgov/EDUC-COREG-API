@@ -27,7 +27,4 @@ public class GraduationProgramCourses implements Serializable {
 
     private String courseID;
 
-    private String gradProgramID;
-
-    private String gradProgramRequirementID;
 }
