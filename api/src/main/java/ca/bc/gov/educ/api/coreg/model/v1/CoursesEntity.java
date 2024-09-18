@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -34,6 +35,15 @@ public class CoursesEntity {
   @Basic
   @Column(name = "END_DATE")
   private LocalDateTime endDate;
+
+  @Basic
+  @Column(name = "COMPLETION_END_DATE")
+  private LocalDate completionEndDate;
+
+  @Basic
+  @Column(name = "GENERIC_CRSE_TYPE")
+  private String genericCourseType;
+
 
   @Basic
   @Column(name = "PROGRAM_GUIDE_TITLE")

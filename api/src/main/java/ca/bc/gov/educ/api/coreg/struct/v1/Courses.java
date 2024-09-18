@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class Courses implements Serializable {
   private LocalDateTime startDate;
 
   private LocalDateTime endDate;
+
+  private LocalDate completionEndDate;
+
+  private String genericCourseType;
 
   @Valid
   private List<CourseCode> courseCode;
