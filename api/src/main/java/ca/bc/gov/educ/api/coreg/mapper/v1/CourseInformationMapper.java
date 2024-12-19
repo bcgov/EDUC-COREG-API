@@ -7,7 +7,9 @@ import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {LocalDateTimeMapper.class, StringMapper.class, CourseCodeMapper.class, CourseCharecteristicsMapper.class, CourseAllowableCreditsMapper.class
+@Mapper(
+        componentModel = "spring",
+        uses = {LocalDateTimeMapper.class, StringMapper.class, CourseCodeMapper.class, CourseCharecteristicsMapper.class, CourseAllowableCreditsMapper.class
 })
 @SuppressWarnings("squid:S1214")
 public interface CourseInformationMapper {

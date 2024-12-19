@@ -70,7 +70,7 @@ public class EventHandlerService {
         this.coregStatusEventRepository = coregStatusEventRepository;
         this.courseCodeMappingRepository = courseCodeMappingRepository;
         this.courseInformationService = courseInformationService;
-        this.courseInformationMapper = Mappers.getMapper(CourseInformationMapper.class);
+        this.courseInformationMapper = courseInformationMapper;
     }
 
     /**
