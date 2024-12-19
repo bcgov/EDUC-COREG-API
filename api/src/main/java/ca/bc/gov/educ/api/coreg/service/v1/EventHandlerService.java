@@ -13,10 +13,10 @@ import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import ca.bc.gov.educ.api.coreg.struct.v1.Event;
 import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -70,7 +70,7 @@ public class EventHandlerService {
         this.coregStatusEventRepository = coregStatusEventRepository;
         this.courseCodeMappingRepository = courseCodeMappingRepository;
         this.courseInformationService = courseInformationService;
-        this.courseInformationMapper = courseInformationMapper;
+        this.courseInformationMapper = Mappers.getMapper(CourseInformationMapper.class);
     }
 
     /**
