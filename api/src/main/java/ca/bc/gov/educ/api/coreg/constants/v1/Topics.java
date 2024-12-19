@@ -1,16 +1,16 @@
-package ca.bc.gov.educ.api.institute.constants.v1;
+package ca.bc.gov.educ.api.coreg.constants.v1;
 
 /**
  * The enum Topics.
  */
 public enum Topics {
   /**
-   * Institute events topic.
+   * Coreg api topic topics.
    */
-  INSTITUTE_EVENTS_TOPIC,
+  COREG_API_TOPIC,
 
   /**
-   * Institute api topic topics.
+   * Coreg events topic.
    */
-  INSTITUTE_API_TOPIC,
+  COREG_EVENTS_TOPIC,
 }

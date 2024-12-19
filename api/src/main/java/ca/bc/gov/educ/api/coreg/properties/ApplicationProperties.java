@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 public class ApplicationProperties {
 
-  public static final String INSTITUTE_API = "INSTITUTE-API";
-  public static final String STREAM_NAME= "INSTITUTE_EVENTS";
+  public static final String COREG_API = "COREG-API";
+  public static final String STREAM_NAME= "COREG_EVENTS";
   public static final String CORRELATION_ID = "correlationID";
   /**
    * The Stan url.
