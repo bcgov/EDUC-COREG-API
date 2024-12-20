@@ -66,7 +66,7 @@ public class EventHandlerService {
      * @param coregStatusEventRepository the student event repository
      */
     @Autowired
-    public EventHandlerService(final CoregStatusEventRepository coregStatusEventRepository, CourseCodeMappingRepository courseCodeMappingRepository, CourseInformationService courseInformationService, CourseInformationMapper courseInformationMapper) {
+    public EventHandlerService(final CoregStatusEventRepository coregStatusEventRepository, CourseCodeMappingRepository courseCodeMappingRepository, CourseInformationService courseInformationService) {
         this.coregStatusEventRepository = coregStatusEventRepository;
         this.courseCodeMappingRepository = courseCodeMappingRepository;
         this.courseInformationService = courseInformationService;
