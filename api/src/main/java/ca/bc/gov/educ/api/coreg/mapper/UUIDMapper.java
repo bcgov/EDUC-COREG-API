@@ -1,9 +1,11 @@
-package ca.bc.gov.educ.api.institute.mapper;
+package ca.bc.gov.educ.api.coreg.mapper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class UUIDMapper {
 
     public UUID map(String value) {
