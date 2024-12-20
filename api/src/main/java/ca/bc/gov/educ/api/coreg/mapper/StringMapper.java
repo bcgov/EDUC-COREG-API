@@ -1,12 +1,10 @@
 package ca.bc.gov.educ.api.coreg.mapper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
 /**
  * The type String mapper.
  */
-@Component
 public class StringMapper {
 
   /**

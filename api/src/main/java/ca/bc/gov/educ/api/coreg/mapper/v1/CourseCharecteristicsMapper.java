@@ -8,9 +8,7 @@ import ca.bc.gov.educ.api.coreg.mapper.UUIDMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(
-        componentModel = "spring",
-        uses = {UUIDMapper.class, LocalDateTimeMapper.class, StringMapper.class})
+@Mapper(uses = {UUIDMapper.class, LocalDateTimeMapper.class, StringMapper.class})
 public interface CourseCharecteristicsMapper {
 
     CourseCharecteristicsMapper mapper = Mappers.getMapper(CourseCharecteristicsMapper.class);
