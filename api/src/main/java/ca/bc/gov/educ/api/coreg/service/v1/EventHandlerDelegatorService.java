@@ -54,9 +54,9 @@ public class EventHandlerDelegatorService {
         try {
             switch (event.getEventType()) {
                 case GET_COURSE_FROM_EXTERNAL_ID:
-                    log.info("received GET_STUDENT event :: {}", event.getSagaId());
+                    log.info("received GET_COURSE_FROM_EXTERNAL_ID event :: {}", event.getSagaId());
                     log.trace(PAYLOAD_LOG, event.getEventPayload());
-                    response = eventHandlerService.handleGetCourseFromExternalIDEvent(event, isSynchronous);
+                    response = eventHandlerService.handleGetCourseFromExternalIDEvent(event);
                     log.info(RESPONDING_BACK_TO_NATS_ON_CHANNEL, message.getReplyTo() != null ? message.getReplyTo() : event.getReplyTo());
                     publishToNATS(event, message, isSynchronous, response);
                     break;
