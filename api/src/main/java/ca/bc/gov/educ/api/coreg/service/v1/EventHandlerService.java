@@ -1,17 +1,11 @@
 package ca.bc.gov.educ.api.coreg.service.v1;
 
-import static ca.bc.gov.educ.api.coreg.constants.v1.EventStatus.MESSAGE_PUBLISHED;
 import static lombok.AccessLevel.PRIVATE;
 
-import ca.bc.gov.educ.api.coreg.constants.v1.EventOutcome;
-import ca.bc.gov.educ.api.coreg.constants.v1.EventType;
 import ca.bc.gov.educ.api.coreg.mapper.v1.CourseInformationMapper;
-import ca.bc.gov.educ.api.coreg.model.v1.CoregStatusEvent;
-import ca.bc.gov.educ.api.coreg.repository.v1.CoregStatusEventRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseCodeMappingRepository;
-import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import ca.bc.gov.educ.api.coreg.struct.v1.Event;
-import ca.bc.gov.educ.api.coreg.util.JsonUtil;
+import ca.bc.gov.educ.api.coreg.util.JsonUtilWithJavaTime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 
 /**
  * The type Event handler service.
@@ -51,9 +44,6 @@ public class EventHandlerService {
     public static final String EVENT_PAYLOAD = "event is :: {}";
 
     @Getter(PRIVATE)
-    private final CoregStatusEventRepository coregStatusEventRepository;
-
-    @Getter(PRIVATE)
     private final CourseCodeMappingRepository courseCodeMappingRepository;
 
     @Getter(PRIVATE)
@@ -63,11 +53,9 @@ public class EventHandlerService {
     /**
      * Instantiates a new Event handler service.
      *
-     * @param coregStatusEventRepository the student event repository
      */
     @Autowired
-    public EventHandlerService(final CoregStatusEventRepository coregStatusEventRepository, CourseCodeMappingRepository courseCodeMappingRepository, CourseInformationService courseInformationService) {
-        this.coregStatusEventRepository = coregStatusEventRepository;
+    public EventHandlerService(CourseCodeMappingRepository courseCodeMappingRepository, CourseInformationService courseInformationService) {
         this.courseCodeMappingRepository = courseCodeMappingRepository;
         this.courseInformationService = courseInformationService;
         this.courseInformationMapper = Mappers.getMapper(CourseInformationMapper.class);
@@ -77,57 +65,21 @@ public class EventHandlerService {
      * Saga should never be null for this type of event.
      * this method expects that the event payload contains a pen number.
      *
-     * @param event         containing the student PEN.
-     * @param isSynchronous the is synchronous
+     * @param event         containing the Course External ID.
      * @return the byte [ ]
      * @throws JsonProcessingException the json processing exception
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public byte[] handleGetCourseFromExternalIDEvent(Event event, boolean isSynchronous) throws JsonProcessingException {
-        if (isSynchronous) {
-            val optionalCourseCodeEntity = courseCodeMappingRepository.findByExternalCode(event.getEventPayload());
-            if (optionalCourseCodeEntity.isPresent()) {
-
-                return JsonUtil.getJsonBytesFromObject(courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()));
-            } else {
-                return new byte[0];
-            }
-        }
-
-        log.trace(EVENT_PAYLOAD, event);
-        val optionalCourseCodeEntity =  courseCodeMappingRepository.findByExternalCode(event.getEventPayload());
+    public byte[] handleGetCourseFromExternalIDEvent(Event event) throws JsonProcessingException {
+        // always syncronous
+        val optionalCourseCodeEntity = courseCodeMappingRepository.findByExternalCode(event.getEventPayload());
+        log.debug("Optional course code entity present? " + optionalCourseCodeEntity.isPresent());
         if (optionalCourseCodeEntity.isPresent()) {
-            Courses courses = courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()); // need to convert to structure MANDATORY otherwise jackson will break.
-            event.setEventPayload(JsonUtil.getJsonStringFromObject(courses));
-            event.setEventOutcome(EventOutcome.COURSE_FOUND);
+            log.debug("Returning " + courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()));
+            return JsonUtilWithJavaTime.getJsonBytesFromObject(courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()));
         } else {
-            event.setEventOutcome(EventOutcome.COURSE_NOT_FOUND);
+            return new byte[0];
         }
-        val coregStatusEvent = createCoregStatusEventRecord(event);
-        return createResponseEvent(coregStatusEvent);
-    }
 
-    private CoregStatusEvent createCoregStatusEventRecord(Event event) {
-        return CoregStatusEvent.builder()
-                .createDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .createUser(event.getEventType().toString())
-                .updateUser(event.getEventType().toString())
-                .eventPayloadBytes(event.getEventPayload().getBytes())
-                .eventType(event.getEventType().toString())
-                .sagaId(event.getSagaId())
-                .eventStatus(MESSAGE_PUBLISHED.toString())
-                .eventOutcome(event.getEventOutcome().toString())
-                .replyChannel(event.getReplyTo())
-                .build();
-    }
-
-    private byte[] createResponseEvent(CoregStatusEvent event) throws JsonProcessingException {
-        val responseEvent = Event.builder()
-                .sagaId(event.getSagaId())
-                .eventType(EventType.valueOf(event.getEventType()))
-                .eventOutcome(EventOutcome.valueOf(event.getEventOutcome()))
-                .eventPayload(event.getEventPayload()).build();
-        return JsonUtil.getJsonBytesFromObject(responseEvent);
     }
 }

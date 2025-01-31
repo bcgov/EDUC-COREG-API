@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.coreg.messaging.jetstream;
 import ca.bc.gov.educ.api.coreg.model.v1.ChoreographedEvent;
 import ca.bc.gov.educ.api.coreg.properties.ApplicationProperties;
 import ca.bc.gov.educ.api.coreg.service.v1.JetStreamEventHandlerService;
+import ca.bc.gov.educ.api.coreg.struct.v1.Event;
 import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import io.nats.client.Connection;
 import io.nats.client.JetStreamApiException;
@@ -52,28 +53,32 @@ public class Subscriber {
      */
     @PostConstruct
     public void subscribe() throws IOException, JetStreamApiException {
-        val qName = "STUDENT-EVENTS-TOPIC-STUDENT-API";
+        log.debug("Attempting to subscribe to COREG_EVENTS_TOPIC...");
+        val qName = "COREG-API-COURSES-EVENTS-TOPIC-DURABLE";
         val autoAck = false;
         PushSubscribeOptions options = PushSubscribeOptions.builder().stream(ApplicationProperties.STREAM_NAME)
-                .durable("STUDENT-API-STUDENT-EVENTS-TOPIC-DURABLE")
+                .durable("COREG-API-COURSES-EVENTS-TOPIC-DURABLE")
                 .configuration(ConsumerConfiguration.builder().deliverPolicy(DeliverPolicy.New).build()).build();
-        this.natsConnection.jetStream().subscribe(COREG_EVENTS_TOPIC.toString(), qName, this.natsConnection.createDispatcher(), this::onStudentEventsTopicMessage,
+        this.natsConnection.jetStream().subscribe(COREG_EVENTS_TOPIC.toString(), qName, this.natsConnection.createDispatcher(), this::onCoregEventsTopicMessage,
                 autoAck, options);
+
+        log.debug("Subscription successfully established for COREG_EVENTS_TOPIC.");
     }
 
     /**
-     * This method will process the event message pushed into the student_events_topic.
+     * This method will process the event message pushed into the coreg_events_topic.
      * this will get the message and update the event status to mark that the event reached the message broker.
      * On message message handler.
      *
      * @param message the string representation of {@link Event} if it not type of event then it will throw exception and will be ignored.
      */
-    public void onStudentEventsTopicMessage(final Message message) {
+    public void onCoregEventsTopicMessage(final Message message) {
         log.info("Received message Subject:: {} , SID :: {} , sequence :: {}, pending :: {} ", message.getSubject(), message.getSID(), message.metaData().consumerSequence(), message.metaData().pendingCount());
         try {
             val eventString = new String(message.getData());
             ca.bc.gov.educ.api.institute.helpers.LogHelper.logMessagingEventDetails(eventString);
             ChoreographedEvent event = JsonUtil.getJsonObjectFromString(ChoreographedEvent.class, eventString);
+            log.debug("Received event: eventType = {}, eventPayload = {}", event.getEventType(), event.getEventPayload());
             jetStreamEventHandlerService.updateEventStatus(event);
             log.info("received event :: {} ", event);
             message.ack();

@@ -42,9 +42,9 @@ public class JetStreamEventHandlerService {
             var eventID = UUID.fromString(choreographedEvent.getEventID());
             var eventOptional = coregStatusEventRepository.findById(eventID);
             if (eventOptional.isPresent()) {
-                var studentEvent = eventOptional.get();
-                studentEvent.setEventStatus(MESSAGE_PUBLISHED.toString());
-                coregStatusEventRepository.save(studentEvent);
+                var coregEvent = eventOptional.get();
+                coregEvent.setEventStatus(MESSAGE_PUBLISHED.toString());
+                coregStatusEventRepository.save(coregEvent);
             }
         }
     }
