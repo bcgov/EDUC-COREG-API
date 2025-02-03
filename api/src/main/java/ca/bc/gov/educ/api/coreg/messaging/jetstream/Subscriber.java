@@ -73,14 +73,14 @@ public class Subscriber {
      * @param message the string representation of {@link Event} if it not type of event then it will throw exception and will be ignored.
      */
     public void onCoregEventsTopicMessage(final Message message) {
-        log.info("Received message Subject:: {} , SID :: {} , sequence :: {}, pending :: {} ", message.getSubject(), message.getSID(), message.metaData().consumerSequence(), message.metaData().pendingCount());
+        log.debug("Received message Subject:: {} , SID :: {} , sequence :: {}, pending :: {} ", message.getSubject(), message.getSID(), message.metaData().consumerSequence(), message.metaData().pendingCount());
         try {
             val eventString = new String(message.getData());
             ca.bc.gov.educ.api.institute.helpers.LogHelper.logMessagingEventDetails(eventString);
             ChoreographedEvent event = JsonUtil.getJsonObjectFromString(ChoreographedEvent.class, eventString);
             log.debug("Received event: eventType = {}, eventPayload = {}", event.getEventType(), event.getEventPayload());
             jetStreamEventHandlerService.updateEventStatus(event);
-            log.info("received event :: {} ", event);
+            log.debug("received event :: {} ", event);
             message.ack();
         } catch (final Exception ex) {
             log.error("Exception ", ex);
