@@ -76,7 +76,7 @@ public class Subscriber {
         log.debug("Received message Subject:: {} , SID :: {} , sequence :: {}, pending :: {} ", message.getSubject(), message.getSID(), message.metaData().consumerSequence(), message.metaData().pendingCount());
         try {
             val eventString = new String(message.getData());
-            ca.bc.gov.educ.api.institute.helpers.LogHelper.logMessagingEventDetails(eventString);
+            ca.bc.gov.educ.api.coreg.helpers.LogHelper.logMessagingEventDetails(eventString);
             ChoreographedEvent event = JsonUtil.getJsonObjectFromString(ChoreographedEvent.class, eventString);
             log.debug("Received event: eventType = {}, eventPayload = {}", event.getEventType(), event.getEventPayload());
             jetStreamEventHandlerService.updateEventStatus(event);

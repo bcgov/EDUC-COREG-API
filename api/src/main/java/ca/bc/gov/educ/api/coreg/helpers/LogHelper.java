@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.institute.helpers;
+package ca.bc.gov.educ.api.coreg.helpers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
