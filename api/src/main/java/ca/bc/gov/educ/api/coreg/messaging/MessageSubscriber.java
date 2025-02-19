@@ -64,12 +64,12 @@ public class MessageSubscriber {
             if (message != null) {
                 try {
                     var eventString = new String(message.getData());
-                    ca.bc.gov.educ.api.institute.helpers.LogHelper.logMessagingEventDetails(eventString);
+                    ca.bc.gov.educ.api.coreg.helpers.LogHelper.logMessagingEventDetails(eventString);
                     var event = JsonUtil.getJsonObjectFromString(Event.class, eventString);
                     if (event.getPayloadVersion() == null) {
                         event.setPayloadVersion("V1");
                     }
-                    //place holder to have different versions
+                    //placeholder to have different versions
                     if ("V1".equalsIgnoreCase(event.getPayloadVersion())) {
                         messageProcessingThreads.execute(() -> eventHandlerDelegatorServiceV1.handleEvent(event, message));
                     }
