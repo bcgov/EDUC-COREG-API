@@ -5,23 +5,31 @@ import ca.bc.gov.educ.api.coreg.model.v1.CourseCodeEntity;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseCodeMappingRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseInformationRepository;
-import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
+import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
+import ca.bc.gov.educ.api.coreg.util.JsonUtil;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class CourseInformationService {
+
+    private final CourseInformationSearchService courseInformationSearchService;
 
     private final CourseInformationRepository courseInformationRepository;
 
     private final CourseCodeMappingRepository courseCodeMappingRepository;
-
-    public CourseInformationService(CourseInformationRepository courseInformationRepository, CourseCodeMappingRepository courseCodeMappingRepository) {
-        this.courseInformationRepository = courseInformationRepository;
-        this.courseCodeMappingRepository = courseCodeMappingRepository;
-    }
 
     public CoursesEntity getCourseInformation(String courseID) {
         val optionalCoursesEntity = courseInformationRepository.findById(courseID);
@@ -34,5 +42,18 @@ public class CourseInformationService {
 
          //optional<CoursesEntity> = courseInformationRepository.findByExternalCode(externalCode);
          return curSchoolEntityOptional.get().getCoursesEntity();
+    }
+
+    public CompletableFuture<Page<CoursesEntity>> getCourseInformationByCriteria(Integer pageNumber, Integer pageSize, String sortCriteriaJson, String searchCriteriaListJson) {
+        final List<Sort.Order> sorts = new ArrayList<>();
+        Specification<CoursesEntity> specs = courseInformationSearchService
+                .setSpecificationAndSortCriteria(
+                        sortCriteriaJson,
+                        searchCriteriaListJson,
+                        JsonUtil.mapper,
+                        sorts
+                );
+        return courseInformationSearchService
+                .findAll(specs, pageNumber, pageSize, sorts);
     }
 }

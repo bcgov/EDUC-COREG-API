@@ -75,9 +75,4 @@ public class CoursesEntity {
   @OneToMany(mappedBy = "coursesEntity", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, targetEntity = CourseAllowableCreditEntity.class)
   private Set<CourseAllowableCreditEntity> courseAllowableCredit;
 
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  @OneToMany(mappedBy = "coursesEntity", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, targetEntity = RequiredCourseEntity.class)
-  private Set<RequiredCourseEntity> requiredCourse;
-
 }

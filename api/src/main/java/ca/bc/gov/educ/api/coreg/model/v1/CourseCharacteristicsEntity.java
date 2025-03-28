@@ -20,10 +20,6 @@ public class CourseCharacteristicsEntity {
     @Column(name = "CHAR_ID")
     String id;
 
-    @Id
-    @OneToOne(mappedBy = "courseCharacteristics")
-    private CoursesEntity coursesEntity;
-
     @Basic
     @Column(name = "CHAR_TYPE")
     private String type;
