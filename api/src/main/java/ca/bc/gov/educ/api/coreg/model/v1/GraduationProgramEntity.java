@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import java.util.Set;
 public class GraduationProgramEntity {
     @Id
     @Column(name = "GRDPRG_ID", unique = true, updatable = false)
-    private String gradProgramID;
+    private BigInteger gradProgramID;
     @Basic
     @Column(name = "NAME")
     private String gradProgramName;

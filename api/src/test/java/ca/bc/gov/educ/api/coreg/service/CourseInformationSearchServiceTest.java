@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public class CourseInformationSearchServiceTest extends BaseIntegrationTest {
 
     @Test
     public void findAll_shouldReturn() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         CoursesEntity coursesEntity = createCourseEntity(courseId);
 
         String sort = "{ \"courseID\": \"ASC\" }";
@@ -63,7 +64,7 @@ public class CourseInformationSearchServiceTest extends BaseIntegrationTest {
     @Test
     public void setSpecificationAndSortCriteria_givenValidData_shouldReturnOk() {
         String sort = "{ \"courseID\": \"ASC\" }";
-        String searchParams = "[{\"condition\":null,\"searchCriteriaList\":[{\"key\":\"courseID\",\"operation\":\"eq\",\"value\":\"ABC\",\"valueType\":\"STRING\",\"condition\":\"AND\"}]}]";
+        String searchParams = "[{\"condition\":null,\"searchCriteriaList\":[{\"key\":\"courseID\",\"operation\":\"eq\",\"value\":\"8989898\",\"valueType\":\"STRING\",\"condition\":\"AND\"}]}]";
         Specification<CoursesEntity> courseEntitySpecs = courseInformationSearchService.setSpecificationAndSortCriteria(sort, searchParams, JsonUtil.mapper, new ArrayList<>());
         Assert.assertNotNull(courseEntitySpecs);
     }

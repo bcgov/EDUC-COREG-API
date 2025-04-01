@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,10 +23,10 @@ import java.util.Set;
 public class CoursesEntity {
   @Id
   @Column(name = "CRS_ID", unique = true, updatable = false)
-  private String courseID;
+  private BigInteger courseID;
   @Basic
   @Column(name = "SIF_SUBJECT_CHAR_ID")
-  private String sifSubjectCode;
+  private BigInteger sifSubjectCode;
   @Basic
   @Column(name = "COURSE_TITLE")
   private String courseTitle;

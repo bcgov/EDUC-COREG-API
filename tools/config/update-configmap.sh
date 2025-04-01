@@ -24,6 +24,11 @@ TKN=$(curl -s \
   -d "grant_type=password" \
   "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" | jq -r '.access_token')
 
+echo Writing scope COREG_READ_COURSE
+curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TKN" \
+  -d "{\"description\": \"Read course data\",\"id\": \"COREG_READ_COURSE\",\"name\": \"COREG_READ_COURSE\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
@@ -77,6 +82,11 @@ oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map
   --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" \
   --from-literal=NATS_MAX_RECONNECT=60 \
   --from-literal=NATS_URL=$NATS_URL \
+  --from-literal=CONNECTION_TIMEOUT='30000' \
+  --from-literal=MAXIMUM_POOL_SIZE='15' \
+  --from-literal=MIN_IDLE='15' \
+  --from-literal=IDLE_TIMEOUT='600000' \
+  --from-literal=MAX_LIFETIME='1500000' \
   --dry-run -o yaml | oc apply -f -
 
 echo

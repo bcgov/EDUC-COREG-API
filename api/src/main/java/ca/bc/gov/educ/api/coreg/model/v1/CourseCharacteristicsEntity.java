@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigInteger;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class CourseCharacteristicsEntity {
 
     @Id
     @Column(name = "CHAR_ID")
-    String id;
+    private BigInteger id;
 
     @Basic
     @Column(name = "CHAR_TYPE")

@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public class GraduationProgramAPIControllerTest extends BaseIntegrationTest{
 
     @Test
     public void testGetGraduationProgramBySearchCriteria_ProgramRequirementName_Equal() throws ExecutionException, InterruptedException {
-        String gradProgramID = "PRG123";
+        BigInteger gradProgramID = new BigInteger("7678");
         Integer pageNumber = 0;
         Integer pageSize = 10;
         GraduationProgramEntity graduationProgramEntity = createGraduationProgramEntity(gradProgramID);

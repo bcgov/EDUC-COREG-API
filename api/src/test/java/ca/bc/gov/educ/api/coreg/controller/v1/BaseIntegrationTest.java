@@ -11,18 +11,18 @@ public abstract class BaseIntegrationTest {
     public CourseCodeEntity createCourseCodeEntity(String externalCode) {
         CourseCodeEntity courseCodeEntity = new CourseCodeEntity();
         courseCodeEntity.setExternalCode(externalCode);
-        courseCodeEntity.setOriginatingSystem("39");
-        courseCodeEntity.setCrscdmapID(UUID.randomUUID().toString());
+        courseCodeEntity.setOriginatingSystem(39);
+        courseCodeEntity.setCrscdmapID(new BigInteger("111"));
         return courseCodeEntity;
     }
 
-    public CoursesEntity createCourseEntity(String courseId) {
+    public CoursesEntity createCourseEntity(BigInteger courseId) {
         CoursesEntity coursesEntity = new CoursesEntity();
         coursesEntity.setCourseID(courseId);
         return coursesEntity;
     }
 
-    public GraduationProgramEntity createGraduationProgramEntity(String gradProgramID) {
+    public GraduationProgramEntity createGraduationProgramEntity(BigInteger gradProgramID) {
         GraduationProgramCoursesEntity graduationProgramCoursesEntity = new GraduationProgramCoursesEntity();
         graduationProgramCoursesEntity.setGradProgramCourseType("TEST");
         GraduationProgramRequirementEntity graduationProgramRequirementEntity = new GraduationProgramRequirementEntity();

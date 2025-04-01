@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CourseAllowableCredits implements Serializable {
 
-    private String cacID;
+    private BigInteger cacID;
 
-    private String creditValue;
+    private Integer creditValue;
 
-    private String courseID;
+    private BigInteger courseID;
 
     private String startDate;
 

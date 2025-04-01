@@ -34,10 +34,10 @@ public class GraduationProgramCoursesEntity {
 
     @Basic
     @Column(name = "CRS_ID")
-    private String courseID;
+    private BigInteger courseID;
 
     @Basic
     @Column(name = "GRDPRG_ID")
-    private String gradProgramID;
+    private BigInteger gradProgramID;
 
 }

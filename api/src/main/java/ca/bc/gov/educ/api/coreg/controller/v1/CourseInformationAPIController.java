@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -19,7 +21,7 @@ public class CourseInformationAPIController implements CourseInformationAPIEndpo
   private final CourseInformationService courseInformationService;
 
   @Override
-  public Courses getCourseInformation(String courseID) {
+  public Courses getCourseInformation(BigInteger courseID) {
     return mapper.toStructure(courseInformationService.getCourseInformation(courseID));
   }
 
@@ -30,7 +32,7 @@ public class CourseInformationAPIController implements CourseInformationAPIEndpo
 
   @Override
   public CompletableFuture<Page<Courses>> findAll(Integer pageNumber, Integer pageSize, String sortCriteriaJson, String searchCriteriaListJson) {
-    return courseInformationService.getCourseInformationByCriteria(pageNumber, pageSize, sortCriteriaJson, searchCriteriaListJson).thenApplyAsync(coursesLightEntities -> coursesLightEntities.map(mapper::toStructure));
+    return courseInformationService.getCourseInformationByCriteria(pageNumber, pageSize, sortCriteriaJson, searchCriteriaListJson).thenApplyAsync(coursesEntities -> coursesEntities.map(mapper::toStructure));
   }
 
 }

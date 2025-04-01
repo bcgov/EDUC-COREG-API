@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class CourseAllowableCreditEntity {
 
     @Basic
     @Column(name = "CREDIT_VALUE")
-    private String creditValue;
+    private Integer creditValue;
 
     @ManyToOne(optional = true, targetEntity = CoursesEntity.class)
     @JoinColumn(name = "CRS_ID", referencedColumnName = "CRS_ID")
@@ -33,10 +34,10 @@ public class CourseAllowableCreditEntity {
 
     @Basic
     @Column(name = "START_DATE")
-    private String startDate;
+    private LocalDateTime startDate;
 
     @Basic
     @Column(name = "END_DATE")
-    private String endDate;
+    private LocalDateTime endDate;
 
 }

@@ -5,16 +5,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CourseCode  implements Serializable {
 
-    private String courseID;
+    private BigInteger courseID;
 
     private String externalCode;
 
-    private String originatingSystem;
+    private Integer originatingSystem;
 
 }

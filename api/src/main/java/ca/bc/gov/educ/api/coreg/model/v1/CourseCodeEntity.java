@@ -23,7 +23,8 @@ public class CourseCodeEntity {
 
     @Id
     @Column(name = "CRSCDMAP_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
-    private String crscdmapID;
+    private BigInteger crscdmapID;
+
     @ManyToOne(optional = true, targetEntity = CoursesEntity.class)
     @JoinColumn(name = "CRS_ID", referencedColumnName = "CRS_ID")
     CoursesEntity coursesEntity;
@@ -34,5 +35,5 @@ public class CourseCodeEntity {
 
     @Basic
     @Column(name = "ORIGINATING_SYSTEM_CHAR_ID")
-    private String originatingSystem;
+    private Integer originatingSystem;
 }

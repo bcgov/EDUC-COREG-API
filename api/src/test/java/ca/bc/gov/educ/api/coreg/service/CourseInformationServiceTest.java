@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,7 +50,7 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformation() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         CoursesEntity coursesEntity = createCourseEntity(courseId);
 
         when(courseInformationRepository.findById(courseId)).thenReturn(Optional.ofNullable(coursesEntity));
@@ -60,7 +61,7 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformationByExternalCode() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         String externalCode = "ABC123";
         CourseCodeEntity courseCodeEntity = createCourseCodeEntity(externalCode);
         CoursesEntity coursesEntity = createCourseEntity(courseId);
@@ -75,7 +76,7 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformationByCriteria() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         String externalCode = "ABC123";
         CourseCodeEntity courseCodeEntity = createCourseCodeEntity(externalCode);
         CoursesEntity coursesEntity = createCourseEntity(courseId);

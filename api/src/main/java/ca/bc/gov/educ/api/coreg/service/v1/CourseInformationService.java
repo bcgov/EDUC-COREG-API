@@ -5,7 +5,6 @@ import ca.bc.gov.educ.api.coreg.model.v1.CourseCodeEntity;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseCodeMappingRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseInformationRepository;
-import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +31,14 @@ public class CourseInformationService {
 
     private final CourseCodeMappingRepository courseCodeMappingRepository;
 
-    public CoursesEntity getCourseInformation(String courseID) {
+    public CoursesEntity getCourseInformation(BigInteger courseID) {
         val optionalCoursesEntity = courseInformationRepository.findById(courseID);
-        optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID));
+        optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID.toString()));
         return optionalCoursesEntity.get();
     }
 
     public CoursesEntity getCourseInformationByExternalCode(String externalCode){
         Optional<CourseCodeEntity> curSchoolEntityOptional = courseCodeMappingRepository.findByExternalCode(externalCode);
-
-         //optional<CoursesEntity> = courseInformationRepository.findByExternalCode(externalCode);
          return curSchoolEntityOptional.get().getCoursesEntity();
     }
 

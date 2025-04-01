@@ -1,0 +1,84 @@
+#DB Properties
+spring:
+  jmx:
+    enabled: false
+  datasource:
+    hikari:
+      pool-name: educ-grad-coreg-api-cp
+      connection-timeout: ${CONNECTION_TIMEOUT}
+      maximum-pool-size: ${MAXIMUM_POOL_SIZE}
+      minimum-idle: ${MIN_IDLE}
+      idle-timeout: ${IDLE_TIMEOUT}
+      max-lifetime: ${MAX_LIFETIME}
+    url: ${JDBC_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class: oracle.jdbc.driver.OracleDriver
+  jpa:
+    show-sql: ${SPRING_JPA_SHOW_SQL}
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: none
+  mvc:
+    log-request-details: ${SPRING_SHOW_REQUEST_DETAILS}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+  #Keycloak/OAuth properties
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${TOKEN_ISSUER_URL}
+          jwk-set-uri: ${TOKEN_ISSUER_URL}/protocol/openid-connect/certs
+#Logging properties
+logging:
+  file:
+    name: /logs/app.log
+  logback:
+    rollingpolicy:
+      max-history: 1
+      max-file-size: 20MB
+      clean-history-on-start: true
+  pattern:
+    file: '{"time_stamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%3p" ,"thread":"%t" ,"class":"%logger{36}","msg":"%replace(%msg){"[\n\r\"]",""}", "exception":"%replace(%rEx{10}){"[\n\r\"]",""}","http_event":%X{httpEvent:-""},"message_event":%X{messageEvent:-""}}%nopex%n'
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%5p] [%t] [%logger{36}] [%replace(%msg){'[\n\r\"]',''} %X{httpEvent} %X{messageEvent}] %replace(%rEx{10}){'[\n\r\"]',''}%nopex%n"
+  level:
+    ca:
+      bc:
+        gov:
+          educ:
+            api:
+              coreg: ${APP_LOG_LEVEL}
+    org:
+      springframework:
+        web: ${SPRING_WEB_LOG_LEVEL}
+        security: ${SPRING_SECURITY_LOG_LEVEL}
+        boot:
+          autoconfigure:
+            logging: ${SPRING_BOOT_AUTOCONFIG_LOG_LEVEL}
+    com:
+      zaxxer:
+        hikari: ERROR
+
+#Local properties
+server:
+  undertow:
+    threads:
+      worker: 128
+      io: 16
+  #port: 8096
+  max-http-request-header-size: 20000
+
+#API Documentation
+springdoc:
+  api-docs:
+    path: /api/v1/api-docs
+  swagger-ui:
+    path: /api/v1/api-docs-ui.html
+    operationsSorter: alpha
+
+#Nats
+nats:
+  url: ${NATS_URL}
+  maxReconnect: ${NATS_MAX_RECONNECT}

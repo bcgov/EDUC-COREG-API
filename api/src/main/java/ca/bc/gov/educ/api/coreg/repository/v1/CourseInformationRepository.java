@@ -4,6 +4,8 @@ import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface CourseInformationRepository extends JpaRepository<CoursesEntity, String>, JpaSpecificationExecutor<CoursesEntity> {
+import java.math.BigInteger;
+
+public interface CourseInformationRepository extends JpaRepository<CoursesEntity, BigInteger>, JpaSpecificationExecutor<CoursesEntity> {
 
 }

@@ -13,15 +13,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -41,18 +39,18 @@ public class CourseInformationSearchService extends BaseSearchService {
         log.trace("In find all query: {}", specs);
         return CompletableFuture.supplyAsync(() -> {
             Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sorts));
+            List<CoursesEntity> coursesEntityList = new ArrayList<>();
             try {
                 log.trace("Running paginated query specs: {}, paging: {}", specs, paging);
                 var results = this.courseInformationRepository.findAll(specs, paging);
                 log.trace("Paginated query returned with results: {}", results);
-                return results;
+                return new PageImpl<>(coursesEntityList, paging, this.courseInformationRepository.count(specs));
             } catch (final Throwable ex) {
                 log.error("Failure querying for paginated collections: {}", ex.getMessage());
                 throw new CompletionException(ex);
             }
         });
     }
-
 
     public Specification<CoursesEntity> setSpecificationAndSortCriteria(String sortCriteriaJson, String searchCriteriaListJson, ObjectMapper objectMapper, List<Sort.Order> sorts) {
         Specification<CoursesEntity> courseSpecs = null;

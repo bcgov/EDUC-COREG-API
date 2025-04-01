@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -42,7 +43,7 @@ public class CourseInformationAPIControllerTest extends BaseIntegrationTest{
 
     @Test
     public void testGetCourseInformation_Found() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         CoursesEntity coursesEntity = createCourseEntity(courseId);
 
         when(courseInformationService.getCourseInformation(courseId)).thenReturn(coursesEntity);
@@ -53,15 +54,14 @@ public class CourseInformationAPIControllerTest extends BaseIntegrationTest{
 
     @Test
     public void testGetCourseInformation_NotFound() {
-        String courseId = "CRSE123";
-
+        BigInteger courseId = new BigInteger("8989898");
         Courses result = courseInformationAPIController.getCourseInformation(courseId);
         assertThat(result).isNull();
     }
 
     @Test
     public void testGetCourseInformationByExternalCode_Found() {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         String externalCode = "ABC123";
         CourseCodeEntity courseCodeEntity = createCourseCodeEntity(externalCode);
         CoursesEntity coursesEntity = createCourseEntity(courseId);
@@ -83,7 +83,7 @@ public class CourseInformationAPIControllerTest extends BaseIntegrationTest{
 
     @Test
     public void testGetCourseInformationBySearchCriteria_CourseId_Equal() throws ExecutionException, InterruptedException {
-        String courseId = "CRSE123";
+        BigInteger courseId = new BigInteger("8989898");
         Integer pageNumber = 0;
         Integer pageSize = 10;
         CoursesEntity coursesEntity = createCourseEntity(courseId);
@@ -102,6 +102,5 @@ public class CourseInformationAPIControllerTest extends BaseIntegrationTest{
         assertNotNull(result);
         assertEquals(1, result.getContent().size());
     }
-
 
 }

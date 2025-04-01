@@ -1,0 +1,18 @@
+meta {
+  name: Search Grad Program Courses
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/grad-program-course/information/paginated
+  body: none
+  auth: none
+}
+
+params:query {
+  ~pageNumber: 
+  ~pageSize: 
+  ~sort: 
+  ~searchCriteriaList: 
+}
