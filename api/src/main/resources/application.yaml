@@ -3,13 +3,6 @@ spring:
   jmx:
     enabled: false
   datasource:
-    hikari:
-      pool-name: educ-grad-coreg-api-cp
-      connection-timeout: ${CONNECTION_TIMEOUT}
-      maximum-pool-size: ${MAXIMUM_POOL_SIZE}
-      minimum-idle: ${MIN_IDLE}
-      idle-timeout: ${IDLE_TIMEOUT}
-      max-lifetime: ${MAX_LIFETIME}
     url: ${JDBC_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}

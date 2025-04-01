@@ -44,6 +44,9 @@ public class CourseInformationSearchService extends BaseSearchService {
                 log.trace("Running paginated query specs: {}, paging: {}", specs, paging);
                 var results = this.courseInformationRepository.findAll(specs, paging);
                 log.trace("Paginated query returned with results: {}", results);
+                if(results != null &&   results.getContent() != null) {
+                    coursesEntityList = results.getContent();
+                }
                 return new PageImpl<>(coursesEntityList, paging, this.courseInformationRepository.count(specs));
             } catch (final Throwable ex) {
                 log.error("Failure querying for paginated collections: {}", ex.getMessage());

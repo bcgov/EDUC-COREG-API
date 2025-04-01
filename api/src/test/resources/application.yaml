@@ -3,11 +3,6 @@ spring:
   jmx:
     enabled: false
   datasource:
-    hikari:
-      pool-name: educ-grad-coreg-api-cp
-      connection-timeout: 6000
-      maximum-pool-size: 2
-      max-lifetime: 600000
     driver-class: org.h2.Driver
   jpa:
     show-sql: true
