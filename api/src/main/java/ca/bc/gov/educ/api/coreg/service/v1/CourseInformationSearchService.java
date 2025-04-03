@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.coreg.service.v1;
 
-import ca.bc.gov.educ.api.coreg.exception.InstituteAPIRuntimeException;
+import ca.bc.gov.educ.api.coreg.exception.CoregAPIRuntimeException;
 import ca.bc.gov.educ.api.coreg.filter.CourseInformationFilterSpecs;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseInformationRepository;
@@ -69,7 +69,7 @@ public class CourseInformationSearchService extends BaseSearchService {
                 }
             }
         } catch (JsonProcessingException e) {
-            throw new InstituteAPIRuntimeException(e.getMessage());
+            throw new CoregAPIRuntimeException(e.getMessage());
         }
         return courseSpecs;
     }

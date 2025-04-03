@@ -1,7 +1,7 @@
 package ca.bc.gov.educ.api.coreg.service;
 
 import ca.bc.gov.educ.api.coreg.controller.v1.BaseIntegrationTest;
-import ca.bc.gov.educ.api.coreg.exception.InstituteAPIRuntimeException;
+import ca.bc.gov.educ.api.coreg.exception.CoregAPIRuntimeException;
 import ca.bc.gov.educ.api.coreg.filter.CourseInformationFilterSpecs;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseInformationRepository;
@@ -70,9 +70,9 @@ public class CourseInformationSearchServiceTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void setSpecificationAndSortCriteria_givenInvalidData_shouldThrowInstituteAPIRuntimeException() {
+    public void setSpecificationAndSortCriteria_givenInvalidData_shouldThrowCoregAPIRuntimeException() {
         final List<Sort.Order> sorts = new ArrayList<>();
-        Assert.assertThrows(InstituteAPIRuntimeException.class, () -> courseInformationSearchService.setSpecificationAndSortCriteria(null, "{ \"novalue\": \"ASC\" }", JsonUtil.mapper, sorts));
+        Assert.assertThrows(CoregAPIRuntimeException.class, () -> courseInformationSearchService.setSpecificationAndSortCriteria(null, "{ \"novalue\": \"ASC\" }", JsonUtil.mapper, sorts));
     }
 
 }

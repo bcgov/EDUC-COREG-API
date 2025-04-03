@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Om
  */
 @Configuration
-public class InstituteAPIMVCConfig implements WebMvcConfigurer {
+public class CoregAPIMVCConfig implements WebMvcConfigurer {
 
   /**
    * The School api interceptor.
@@ -26,7 +26,7 @@ public class InstituteAPIMVCConfig implements WebMvcConfigurer {
    * @param requestResponseInterceptor the School api interceptor
    */
   @Autowired
-  public InstituteAPIMVCConfig(final RequestResponseInterceptor requestResponseInterceptor) {
+  public CoregAPIMVCConfig(final RequestResponseInterceptor requestResponseInterceptor) {
     this.requestResponseInterceptor = requestResponseInterceptor;
   }
 

@@ -49,7 +49,7 @@ public class CoRegApiResourceApplication {
   public LockProvider lockProvider(@Autowired final JdbcTemplate jdbcTemplate,
       @Autowired final PlatformTransactionManager transactionManager) {
     return new JdbcTemplateLockProvider(jdbcTemplate, transactionManager,
-        "INSTITUTE_SHEDLOCK");
+        "COREG_SHEDLOCK");
   }
 
 

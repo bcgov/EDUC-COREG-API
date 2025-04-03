@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.coreg.util;
 
-import ca.bc.gov.educ.api.coreg.exception.InstituteAPIRuntimeException;
+import ca.bc.gov.educ.api.coreg.exception.CoregAPIRuntimeException;
 
 import java.beans.Expression;
 import java.beans.Statement;
@@ -72,7 +72,7 @@ public class TransformUtil {
           stmt.execute();
         }
       } catch (Exception ex) {
-        throw new InstituteAPIRuntimeException(ex.getMessage());
+        throw new CoregAPIRuntimeException(ex.getMessage());
       }
     }
 
