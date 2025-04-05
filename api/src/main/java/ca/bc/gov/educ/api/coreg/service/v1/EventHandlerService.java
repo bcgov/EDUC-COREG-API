@@ -73,10 +73,11 @@ public class EventHandlerService {
     public byte[] handleGetCourseFromExternalIDEvent(Event event) throws JsonProcessingException {
         // always syncronous
         val optionalCourseCodeEntity = courseCodeMappingRepository.findByExternalCode(event.getEventPayload());
-        log.debug("Optional course code entity present? " + optionalCourseCodeEntity.isPresent());
-        if (optionalCourseCodeEntity.isPresent()) {
-            log.debug("Returning " + courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()));
-            return JsonUtilWithJavaTime.getJsonBytesFromObject(courseInformationMapper.toStructure(optionalCourseCodeEntity.get().getCoursesEntity()));
+        log.debug("Optional course code entity present? " + !optionalCourseCodeEntity.isEmpty());
+        if (!optionalCourseCodeEntity.isEmpty()) {
+            var course = courseInformationMapper.toStructure(optionalCourseCodeEntity.get(0).getCoursesEntity());
+            log.debug("Returning " + course);
+            return JsonUtilWithJavaTime.getJsonBytesFromObject(course);
         } else {
             return new byte[0];
         }
