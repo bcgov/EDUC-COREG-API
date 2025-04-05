@@ -9,6 +9,7 @@ import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,9 +31,11 @@ public class CourseInformationService {
     }
 
     public CoursesEntity getCourseInformationByExternalCode(String externalCode){
-        Optional<CourseCodeEntity> curSchoolEntityOptional = courseCodeMappingRepository.findByExternalCode(externalCode);
+        List<CourseCodeEntity> curSchoolEntityOptional = courseCodeMappingRepository.findByExternalCode(externalCode);
 
-         //optional<CoursesEntity> = courseInformationRepository.findByExternalCode(externalCode);
-         return curSchoolEntityOptional.get().getCoursesEntity();
+        if(!curSchoolEntityOptional.isEmpty()){
+            return curSchoolEntityOptional.get(0).getCoursesEntity();
+        }
+        return null;
     }
 }
