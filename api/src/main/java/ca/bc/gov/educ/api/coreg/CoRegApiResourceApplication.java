@@ -75,12 +75,12 @@ public class CoRegApiResourceApplication {
       http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-          .requestMatchers("/api/v1/api-docs-ui.html",
-                  "/api/v1/api-docs/**",
+          .requestMatchers("/v1/api-docs-ui.html",
+                  "/v1/api-docs/**",
                   "/actuator/health",
                   "/actuator/prometheus",
                   "/actuator/**",
-                  "/api/v1/swagger-ui/**"
+                  "/v1/swagger-ui/**"
           ).permitAll()
           .anyRequest().authenticated()
         )

@@ -33,7 +33,7 @@ public class CourseInformationService {
 
     public CoursesEntity getCourseInformation(String courseID) {
         val optionalCoursesEntity = courseInformationRepository.findById(new BigInteger(courseID));
-        optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID.toString()));
+        optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID));
         return optionalCoursesEntity.get();
     }
 
