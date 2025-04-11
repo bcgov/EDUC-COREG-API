@@ -50,10 +50,10 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformation() {
-        BigInteger courseId = new BigInteger("8989898");
+        String courseId = "8989898";
         CoursesEntity coursesEntity = createCourseEntity(courseId);
 
-        when(courseInformationRepository.findById(courseId)).thenReturn(Optional.ofNullable(coursesEntity));
+        when(courseInformationRepository.findById(new BigInteger(courseId))).thenReturn(Optional.ofNullable(coursesEntity));
         CoursesEntity result = courseInformationService.getCourseInformation(courseId);
         assertThat(result).isNotNull();
         assertThat(result.getCourseID()).isEqualTo(courseId);
@@ -61,14 +61,14 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformationByExternalCode() {
-        BigInteger courseId = new BigInteger("8989898");
+        String courseId = "8989898";
         String externalCode = "ABC123";
         CourseCodeEntity courseCodeEntity = createCourseCodeEntity(externalCode);
         CoursesEntity coursesEntity = createCourseEntity(courseId);
         coursesEntity.setCourseCode(Set.of(courseCodeEntity));
         courseCodeEntity.setCoursesEntity(coursesEntity);
 
-        when(courseCodeMappingRepository.findByExternalCode(externalCode)).thenReturn(Optional.ofNullable(courseCodeEntity));
+        when(courseCodeMappingRepository.findByExternalCode(externalCode)).thenReturn(List.of(courseCodeEntity));
         CoursesEntity result = courseInformationService.getCourseInformationByExternalCode(externalCode);
         assertThat(result).isNotNull();
         assertThat(result.getCourseID()).isEqualTo(courseId);
@@ -76,7 +76,7 @@ public class CourseInformationServiceTest extends BaseIntegrationTest {
 
     @Test
     public void testGetCourseInformationByCriteria() {
-        BigInteger courseId = new BigInteger("8989898");
+        String courseId = "8989898";
         String externalCode = "ABC123";
         CourseCodeEntity courseCodeEntity = createCourseCodeEntity(externalCode);
         CoursesEntity coursesEntity = createCourseEntity(courseId);

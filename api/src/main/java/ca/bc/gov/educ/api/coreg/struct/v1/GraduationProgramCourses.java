@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,10 +21,10 @@ public class GraduationProgramCourses implements Serializable {
      */
     private static final long serialVersionUID = 2L;
 
-    private BigInteger gradProgramCourseID;
+    private String gradProgramCourseID;
 
     private String gradProgramCourseType;
 
-    private BigInteger courseID;
+    private String courseID;
 
 }

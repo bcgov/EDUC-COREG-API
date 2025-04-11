@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -21,7 +20,7 @@ public class CourseInformationAPIController implements CourseInformationAPIEndpo
   private final CourseInformationService courseInformationService;
 
   @Override
-  public Courses getCourseInformation(BigInteger courseID) {
+  public Courses getCourseInformation(String courseID) {
     return mapper.toStructure(courseInformationService.getCourseInformation(courseID));
   }
 

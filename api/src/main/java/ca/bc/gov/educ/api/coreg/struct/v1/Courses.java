@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,9 +24,9 @@ public class Courses implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  private BigInteger courseID;
+  private String courseID;
 
-  private BigInteger sifSubjectCode;
+  private String sifSubjectCode;
 
   private String courseTitle;
 

@@ -16,20 +16,20 @@ public abstract class BaseIntegrationTest {
         return courseCodeEntity;
     }
 
-    public CoursesEntity createCourseEntity(BigInteger courseId) {
+    public CoursesEntity createCourseEntity(String courseId) {
         CoursesEntity coursesEntity = new CoursesEntity();
-        coursesEntity.setCourseID(courseId);
+        coursesEntity.setCourseID(new BigInteger(courseId));
         return coursesEntity;
     }
 
-    public GraduationProgramEntity createGraduationProgramEntity(BigInteger gradProgramID) {
+    public GraduationProgramEntity createGraduationProgramEntity(String gradProgramID) {
         GraduationProgramCoursesEntity graduationProgramCoursesEntity = new GraduationProgramCoursesEntity();
         graduationProgramCoursesEntity.setGradProgramCourseType("TEST");
         GraduationProgramRequirementEntity graduationProgramRequirementEntity = new GraduationProgramRequirementEntity();
         graduationProgramRequirementEntity.setGradProgramRequirementID(new BigInteger("1"));
         graduationProgramRequirementEntity.setGraduationProgramCourses(Set.of(graduationProgramCoursesEntity));
         GraduationProgramEntity graduationProgramEntity = new GraduationProgramEntity();
-        graduationProgramEntity.setGradProgramID(gradProgramID);
+        graduationProgramEntity.setGradProgramID(new BigInteger(gradProgramID));
         graduationProgramEntity.setGradProgramRequirement(Set.of(graduationProgramRequirementEntity));
         return graduationProgramEntity;
     }

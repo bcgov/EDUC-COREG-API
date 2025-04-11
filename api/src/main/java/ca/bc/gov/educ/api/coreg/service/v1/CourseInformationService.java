@@ -31,15 +31,19 @@ public class CourseInformationService {
 
     private final CourseCodeMappingRepository courseCodeMappingRepository;
 
-    public CoursesEntity getCourseInformation(BigInteger courseID) {
-        val optionalCoursesEntity = courseInformationRepository.findById(courseID);
+    public CoursesEntity getCourseInformation(String courseID) {
+        val optionalCoursesEntity = courseInformationRepository.findById(new BigInteger(courseID));
         optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID.toString()));
         return optionalCoursesEntity.get();
     }
 
     public CoursesEntity getCourseInformationByExternalCode(String externalCode){
-        Optional<CourseCodeEntity> curSchoolEntityOptional = courseCodeMappingRepository.findByExternalCode(externalCode);
-         return curSchoolEntityOptional.get().getCoursesEntity();
+        List<CourseCodeEntity> curSchoolEntityOptional = courseCodeMappingRepository.findByExternalCode(externalCode);
+
+        if(!curSchoolEntityOptional.isEmpty()){
+            return curSchoolEntityOptional.get(0).getCoursesEntity();
+        }
+        return null;
     }
 
     public CompletableFuture<Page<CoursesEntity>> getCourseInformationByCriteria(Integer pageNumber, Integer pageSize, String sortCriteriaJson, String searchCriteriaListJson) {

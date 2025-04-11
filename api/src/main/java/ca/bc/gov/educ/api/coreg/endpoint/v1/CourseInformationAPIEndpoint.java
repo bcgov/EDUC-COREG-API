@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import org.springframework.web.bind.annotation.*;
 import ca.bc.gov.educ.api.coreg.constants.v1.PermissionsConstants;
-import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
 
 @RequestMapping(URL.BASE_URL_COURSE_INFORMATION)
@@ -32,7 +31,7 @@ public interface CourseInformationAPIEndpoint {
   @Transactional(readOnly = true)
   @Operation(summary = "Get Course Information by Id", description = "Fetch detailed information about a specific course using its unique identifier (Id)")
   @Schema(name = "COREG", implementation = Courses.class)
-  Courses getCourseInformation(@PathVariable("courseId") BigInteger courseID);
+  Courses getCourseInformation(@PathVariable("courseId") String courseID);
 
   @GetMapping("/external/{externalCode}")
   @PreAuthorize(PermissionsConstants.READ_COREG_COURSE_DATA)

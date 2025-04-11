@@ -7,7 +7,6 @@ package ca.bc.gov.educ.api.coreg.struct.v1;
         import lombok.NoArgsConstructor;
 
         import java.io.Serializable;
-        import java.math.BigInteger;
         import java.time.LocalDateTime;
         import java.util.List;
 
@@ -22,11 +21,11 @@ public class GraduationProgramRequirement implements Serializable {
      */
     private static final long serialVersionUID = 3L;
 
-    private BigInteger gradProgramRequirementID;
+    private String gradProgramRequirementID;
 
     private String gradProgramRequirementName;
 
-    private BigInteger gradProgramID;
+    private String gradProgramID;
 
     @Valid
     private List<GraduationProgramCourses> graduationProgramCourses;
