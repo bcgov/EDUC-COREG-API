@@ -41,7 +41,7 @@ public class CourseInformationSearchServiceTest extends BaseIntegrationTest {
 
     @Test
     public void findAll_shouldReturn() {
-        BigInteger courseId = new BigInteger("8989898");
+        String courseId = "8989898";
         CoursesEntity coursesEntity = createCourseEntity(courseId);
 
         String sort = "{ \"courseID\": \"ASC\" }";

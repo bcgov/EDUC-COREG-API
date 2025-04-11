@@ -41,7 +41,7 @@ public class GraduationProgramAPIControllerTest extends BaseIntegrationTest{
 
     @Test
     public void testGetGraduationProgramBySearchCriteria_ProgramRequirementName_Equal() throws ExecutionException, InterruptedException {
-        BigInteger gradProgramID = new BigInteger("7678");
+        String gradProgramID = "7678";
         Integer pageNumber = 0;
         Integer pageSize = 10;
         GraduationProgramEntity graduationProgramEntity = createGraduationProgramEntity(gradProgramID);
