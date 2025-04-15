@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,10 +23,10 @@ import java.util.Set;
 public class CoursesEntity {
   @Id
   @Column(name = "CRS_ID", unique = true, updatable = false)
-  private String courseID;
+  private BigInteger courseID;
   @Basic
   @Column(name = "SIF_SUBJECT_CHAR_ID")
-  private String sifSubjectCode;
+  private BigInteger sifSubjectCode;
   @Basic
   @Column(name = "COURSE_TITLE")
   private String courseTitle;
@@ -74,10 +75,5 @@ public class CoursesEntity {
   @EqualsAndHashCode.Exclude
   @OneToMany(mappedBy = "coursesEntity", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, targetEntity = CourseAllowableCreditEntity.class)
   private Set<CourseAllowableCreditEntity> courseAllowableCredit;
-
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  @OneToMany(mappedBy = "coursesEntity", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, targetEntity = RequiredCourseEntity.class)
-  private Set<RequiredCourseEntity> requiredCourse;
 
 }

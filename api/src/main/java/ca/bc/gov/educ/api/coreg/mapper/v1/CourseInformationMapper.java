@@ -17,5 +17,5 @@ public interface CourseInformationMapper {
 
   CoursesEntity toModel(Courses structure);
 
-    Courses toStructure(CoursesEntity coursesEntity);
+  Courses toStructure(CoursesEntity coursesEntity);
 }

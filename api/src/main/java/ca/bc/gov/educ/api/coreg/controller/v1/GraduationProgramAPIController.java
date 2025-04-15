@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static ca.bc.gov.educ.api.coreg.util.JsonUtil.mapper;
 @RestController
 @Slf4j
 public class GraduationProgramAPIController implements GraduationProgramAPIEndpoint {

@@ -1,0 +1,15 @@
+meta {
+  name: Get Course Information by External Code
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/course/information/external/:externalCode
+  body: none
+  auth: none
+}
+
+params:path {
+  externalCode: 
+}

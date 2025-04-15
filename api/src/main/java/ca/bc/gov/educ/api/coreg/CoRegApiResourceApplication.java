@@ -49,7 +49,7 @@ public class CoRegApiResourceApplication {
   public LockProvider lockProvider(@Autowired final JdbcTemplate jdbcTemplate,
       @Autowired final PlatformTransactionManager transactionManager) {
     return new JdbcTemplateLockProvider(jdbcTemplate, transactionManager,
-        "INSTITUTE_SHEDLOCK");
+        "COREG_SHEDLOCK");
   }
 
 
@@ -75,9 +75,13 @@ public class CoRegApiResourceApplication {
       http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-          .requestMatchers("/v3/api-docs/**",
-            "/actuator/health", "/actuator/prometheus","/actuator/**",
-            "/swagger-ui/**").permitAll()
+          .requestMatchers("/api/v1/api-docs-ui.html",
+                  "/api/v1/api-docs/**",
+                  "/actuator/health",
+                  "/actuator/prometheus",
+                  "/actuator/**",
+                  "/api/v1/swagger-ui/**"
+          ).permitAll()
           .anyRequest().authenticated()
         )
         .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

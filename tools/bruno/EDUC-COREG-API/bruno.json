@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "EDUC-COREG-API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

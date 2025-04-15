@@ -1,0 +1,18 @@
+meta {
+  name: Search for Course Information
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/course/information/paginated
+  body: none
+  auth: none
+}
+
+params:query {
+  ~pageNumber: 
+  ~pageSize: 
+  ~sort: 
+  ~searchCriteriaList: 
+}

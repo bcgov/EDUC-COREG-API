@@ -3,7 +3,7 @@ package ca.bc.gov.educ.api.coreg.exception;
 /**
  * The type School api runtime exception.
  */
-public class InstituteAPIRuntimeException extends RuntimeException {
+public class CoregAPIRuntimeException extends RuntimeException {
 
   /**
    * The constant serialVersionUID.
@@ -15,7 +15,7 @@ public class InstituteAPIRuntimeException extends RuntimeException {
    *
    * @param message the message
    */
-  public InstituteAPIRuntimeException(String message) {
+  public CoregAPIRuntimeException(String message) {
 		super(message);
 	}
 
@@ -25,7 +25,7 @@ public class InstituteAPIRuntimeException extends RuntimeException {
    * @param message the message
    * @param cause the cause of the exception
    */
-  public InstituteAPIRuntimeException(String message, Throwable cause) {
+  public CoregAPIRuntimeException(String message, Throwable cause) {
     super(message, cause);
   }
 

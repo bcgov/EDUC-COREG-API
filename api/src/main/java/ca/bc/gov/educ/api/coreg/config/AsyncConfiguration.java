@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.institute.config;
+package ca.bc.gov.educ.api.coreg.config;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.time.Duration;
@@ -7,7 +7,6 @@ import org.jboss.threads.EnhancedQueueExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @Profile("!test")
