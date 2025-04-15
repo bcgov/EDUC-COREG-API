@@ -66,9 +66,9 @@ server:
 #API Documentation
 springdoc:
   api-docs:
-    path: /api/v1/api-docs
+    path: /v3/api-docs
   swagger-ui:
-    path: /api/v1/api-docs-ui.html
+    path: /index.html
     operationsSorter: alpha
 
 #Nats
