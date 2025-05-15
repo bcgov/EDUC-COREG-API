@@ -2,9 +2,11 @@ package ca.bc.gov.educ.api.coreg.service.v1;
 
 import ca.bc.gov.educ.api.coreg.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.coreg.model.v1.CourseCodeEntity;
+import ca.bc.gov.educ.api.coreg.model.v1.CourseMappingEntity;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseCodeMappingRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseInformationRepository;
+import ca.bc.gov.educ.api.coreg.repository.v1.CourseMappingRepository;
 import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -31,10 +32,16 @@ public class CourseInformationService {
 
     private final CourseCodeMappingRepository courseCodeMappingRepository;
 
+    private final CourseMappingRepository courseMappingRepository;
+
     public CoursesEntity getCourseInformation(String courseID) {
         val optionalCoursesEntity = courseInformationRepository.findById(new BigInteger(courseID));
         optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID));
         return optionalCoursesEntity.get();
+    }
+
+    public List<CourseMappingEntity> getAllCourseMappingsByOriginatingSystem(String originatingSystemID) {
+        return courseMappingRepository.findByOriginatingSystem(originatingSystemID);
     }
 
     public CoursesEntity getCourseInformationByExternalCode(String externalCode){

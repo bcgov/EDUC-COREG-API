@@ -3,12 +3,14 @@ package ca.bc.gov.educ.api.coreg.controller.v1;
 import ca.bc.gov.educ.api.coreg.endpoint.v1.CourseInformationAPIEndpoint;
 import ca.bc.gov.educ.api.coreg.mapper.v1.CourseInformationMapper;
 import ca.bc.gov.educ.api.coreg.service.v1.CourseInformationService;
+import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
 import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -22,6 +24,11 @@ public class CourseInformationAPIController implements CourseInformationAPIEndpo
   @Override
   public Courses getCourseInformation(String courseID) {
     return mapper.toStructure(courseInformationService.getCourseInformation(courseID));
+  }
+
+  @Override
+  public List<CourseCode> getAllCourseMappingsByOriginatingSystem(String originatingSystemID) {
+    return courseInformationService.getAllCourseMappingsByOriginatingSystem(originatingSystemID).stream().map(mapper::toStructure).toList();
   }
 
   @Override

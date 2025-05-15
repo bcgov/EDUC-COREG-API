@@ -1,6 +1,9 @@
 package ca.bc.gov.educ.api.coreg.endpoint.v1;
 
+import ca.bc.gov.educ.api.coreg.constants.v1.PermissionsConstants;
 import ca.bc.gov.educ.api.coreg.constants.v1.URL;
+import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
+import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -13,9 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
-import org.springframework.web.bind.annotation.*;
-import ca.bc.gov.educ.api.coreg.constants.v1.PermissionsConstants;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RequestMapping(URL.BASE_URL_COURSE_INFORMATION)
@@ -32,6 +38,14 @@ public interface CourseInformationAPIEndpoint {
   @Operation(summary = "Get Course Information by Id", description = "Fetch detailed information about a specific course using its unique identifier (Id)")
   @Schema(name = "COREG", implementation = Courses.class)
   Courses getCourseInformation(@PathVariable("courseId") String courseID);
+
+  @GetMapping("/all/{originatingSystemID}")
+  @PreAuthorize(PermissionsConstants.READ_COREG_COURSE_DATA)
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
+  @Transactional(readOnly = true)
+  @Operation(summary = "Get Course Information by Id", description = "Fetch detailed information about a specific course using its unique identifier (Id)")
+  @Schema(name = "COREG", implementation = Courses.class)
+  List<CourseCode> getAllCourseMappingsByOriginatingSystem(@PathVariable("originatingSystemID") String originatingSystemID);
 
   @GetMapping("/external/{externalCode}")
   @PreAuthorize(PermissionsConstants.READ_COREG_COURSE_DATA)
