@@ -2,7 +2,9 @@ package ca.bc.gov.educ.api.coreg.mapper.v1;
 
 import ca.bc.gov.educ.api.coreg.mapper.LocalDateTimeMapper;
 import ca.bc.gov.educ.api.coreg.mapper.StringMapper;
+import ca.bc.gov.educ.api.coreg.model.v1.CourseMappingEntity;
 import ca.bc.gov.educ.api.coreg.model.v1.CoursesEntity;
+import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
 import ca.bc.gov.educ.api.coreg.struct.v1.Courses;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -14,6 +16,7 @@ public interface CourseInformationMapper {
 
   CourseInformationMapper mapper = Mappers.getMapper(CourseInformationMapper.class);
 
+  CourseCode toStructure(CourseMappingEntity structure);
 
   CoursesEntity toModel(Courses structure);
 
