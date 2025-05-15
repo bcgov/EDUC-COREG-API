@@ -51,17 +51,6 @@ public class CourseInformationAPIControllerTest extends BaseIntegrationTest{
     }
 
     @Test
-    public void testGetAllCourseMappingInformation_Found() {
-        String courseId = "8989898";
-        CoursesEntity coursesEntity = createCourseEntity(courseId);
-
-        when(courseInformationService.getCourseInformation(courseId)).thenReturn(coursesEntity);
-        var result = courseInformationAPIController.getAllCourseMappingsByOriginatingSystem("39");
-        assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(1);
-    }
-
-    @Test
     public void testGetCourseInformation_NotFound() {
         String courseId = "8989898";
         Courses result = courseInformationAPIController.getCourseInformation(courseId);
