@@ -26,13 +26,15 @@ spring:
           jwk-set-uri: ${TOKEN_ISSUER_URL}/protocol/openid-connect/certs
 # prometheus, etc
 management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: *
-  endpoint:
-    prometheus:
-      enabled: true
+        include: "*"
 #Logging properties
 logging:
   file:
