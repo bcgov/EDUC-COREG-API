@@ -1,3 +1,6 @@
+### DEPRECATED ###
+# USE api.deployment.yaml INSTEAD
+#
 ---
 apiVersion: template.openshift.io/v1
 kind: Template
