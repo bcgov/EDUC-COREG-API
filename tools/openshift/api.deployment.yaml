@@ -10,13 +10,13 @@ objects:
   kind: Deployment
   metadata:
     labels:
-      app: "${APP_NAME}"
-    name: "${APP_NAME}"
+      app: "${APP_NAME}-${BRANCH}"
+    name: "${APP_NAME}-${BRANCH}"
   spec:
     replicas: ${{MIN_REPLICAS}}
     selector:
       matchLabels:
-        app: "${APP_NAME}"
+        app: "${APP_NAME}-${BRANCH}"
     strategy:
       rollingUpdate:
         maxUnavailable: 25%
@@ -29,7 +29,7 @@ objects:
           prometheus.io/port: '8080'
           prometheus.io/scrape: 'true'
         labels:
-          app: "${APP_NAME}"
+          app: "${APP_NAME}-${BRANCH}"
       spec:
         containers:
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${REPO_NAME}-${BRANCH}:${TAG}
@@ -54,7 +54,7 @@ objects:
             timeoutSeconds: 5
             failureThreshold: 5
             successThreshold: 1
-          name: "${APP_NAME}"
+          name: "${APP_NAME}-${BRANCH}"
           ports:
           - containerPort: ${{CONTAINER_PORT}}
             protocol: TCP
@@ -78,24 +78,24 @@ objects:
   kind: Service
   metadata:
     labels:
-      app: "${APP_NAME}"
-    name: "${APP_NAME}"
+      app: "${APP_NAME}-${BRANCH}"
+    name: "${APP_NAME}-${BRANCH}"
   spec:
     ports:
     - name: ${CONTAINER_PORT}-tcp
       port: ${{CONTAINER_PORT}}
       protocol: TCP
     selector:
-      app: "${APP_NAME}"
+      app: "${APP_NAME}-${BRANCH}"
 - apiVersion: autoscaling/v2
   kind: HorizontalPodAutoscaler
   metadata:
-    name: "${APP_NAME}-cpu-autoscaler"
+    name: "${APP_NAME}-${BRANCH}-cpu-autoscaler"
   spec:
     scaleTargetRef:
       apiVersion: apps/v1
       kind: Deployment
-      name: "${APP_NAME}"
+      name: "${APP_NAME}-${BRANCH}"
       subresource: scale
     minReplicas: ${{MIN_REPLICAS}}
     maxReplicas: ${{MAX_REPLICAS}}
