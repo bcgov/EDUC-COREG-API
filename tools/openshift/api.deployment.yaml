@@ -1,6 +1,3 @@
-### DEPRECATED ###
-# USE api.deployment.yaml INSTEAD
-#
 ---
 apiVersion: template.openshift.io/v1
 kind: Template
@@ -9,8 +6,8 @@ labels:
 metadata:
     name: "${REPO_NAME}-${BRANCH}-dc"
 objects:
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: "${APP_NAME}-${BRANCH}"
@@ -18,11 +15,12 @@ objects:
   spec:
     replicas: ${{MIN_REPLICAS}}
     selector:
-      app: "${APP_NAME}-${BRANCH}"
-      deploymentConfig: "${APP_NAME}-${BRANCH}"
+      matchLabels:
+        app: "${APP_NAME}-${BRANCH}"
     strategy:
-      resources: {}
-      type: Rolling
+      rollingUpdate:
+        maxUnavailable: 25%
+        maxSurge: 25%
     template:
       metadata:
         annotations:
@@ -32,7 +30,6 @@ objects:
           prometheus.io/scrape: 'true'
         labels:
           app: "${APP_NAME}-${BRANCH}"
-          deploymentConfig: "${APP_NAME}-${BRANCH}"
       spec:
         containers:
         - image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${REPO_NAME}-${BRANCH}:${TAG}
@@ -73,55 +70,10 @@ objects:
             limits:
               cpu: "${MAX_CPU}"
               memory: "${MAX_MEM}"
-# -- Re-enable fluent bit once we have approved splunk token
-#        - image: artifacts.developer.gov.bc.ca/docker-remote/fluent/fluent-bit:1.5.7
-#          name: "${APP_NAME}-${BRANCH}-fluent-bit-sidecar"
-#          imagePullPolicy: Always
-#          imagePullSecrets:
-#            - name: artifactory-creds
-#          volumeMounts:
-#            - name: log-storage
-#              mountPath: /mnt/log
-#            - name: flb-sc-config-volume
-#              mountPath: /fluent-bit/etc/
-#          readinessProbe:
-#            tcpSocket:
-#              port: 2020
-#            initialDelaySeconds: 10
-#            periodSeconds: 30
-#            timeoutSeconds: 5
-#            failureThreshold: 5
-#            successThreshold: 1
-#          livenessProbe:
-#            httpGet:
-#              path: /
-#              port: 2020
-#            initialDelaySeconds: 10
-#            periodSeconds: 30
-#            timeoutSeconds: 5
-#            failureThreshold: 5
-#            successThreshold: 1
-#          ports:
-#            - containerPort: 2020
-#              protocol: TCP
-#              name: metrics
-#          resources:
-#            requests:
-#              cpu: "5m"
-#              memory: "25Mi"
-#            limits:
-#              cpu: "10m"
-#              memory: "50Mi"
         volumes:
         - name: log-storage
           emptyDir: {}
-# -- Re-enable fluent bit once we have approved splunk token
-#        - name: flb-sc-config-volume
-#          configMap:
-#            name: "${APP_NAME}-flb-sc-config-map"
     test: false
-    triggers:
-    - type: ConfigChange
 - apiVersion: v1
   kind: Service
   metadata:
@@ -135,15 +87,14 @@ objects:
       protocol: TCP
     selector:
       app: "${APP_NAME}-${BRANCH}"
-      deploymentconfig: "${APP_NAME}-${BRANCH}"
 - apiVersion: autoscaling/v2
   kind: HorizontalPodAutoscaler
   metadata:
     name: "${APP_NAME}-${BRANCH}-cpu-autoscaler"
   spec:
     scaleTargetRef:
-      apiVersion: apps.openshift.io/v1
-      kind: DeploymentConfig
+      apiVersion: apps/v1
+      kind: Deployment
       name: "${APP_NAME}-${BRANCH}"
       subresource: scale
     minReplicas: ${{MIN_REPLICAS}}
