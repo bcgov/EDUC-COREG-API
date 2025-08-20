@@ -17,6 +17,19 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+
+  flyway:
+    enabled: ${ENABLE_FLYWAY}
+    baseline-on-migrate: true
+    table: FLYWAY_SCHEMA_HISTORY
+    url: ${JDBC_URL}
+    schema: ${DB_USERNAME}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    location: classpath:db/migration
   #Keycloak/OAuth properties
   security:
     oauth2:

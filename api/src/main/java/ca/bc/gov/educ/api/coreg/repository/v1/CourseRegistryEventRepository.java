@@ -9,6 +9,7 @@ import java.util.List;
 public interface CourseRegistryEventRepository extends JpaRepository<CourseRegistryEventEntity, Long> {
 
     @EntityGraph(attributePaths = "dataSourceEntities")
-    List<CourseRegistryEventEntity> findByCreatedDateAfter(LocalDateTime oneMonthAgo);
+    List<CourseRegistryEventEntity> findByAffectedTableAndCreatedDateAfter(
+            String affectedTable, LocalDateTime fromDate);
 }
 

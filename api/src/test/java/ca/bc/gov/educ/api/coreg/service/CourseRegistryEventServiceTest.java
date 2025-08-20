@@ -42,30 +42,30 @@ class CourseRegistryEventServiceTest {
         CourseRegistryEventEntity entity = new CourseRegistryEventEntity();
         CourseRegistryEventDTO dto = new CourseRegistryEventDTO();
 
-        when(repository.findByCreatedDateAfter(any(LocalDateTime.class)))
+        when(repository.findByAffectedTableAndCreatedDateAfter(any(String.class), any(LocalDateTime.class)))
                 .thenReturn(List.of(entity));
-        when(mapper.toCourseRegistryEventDTOs(List.of(entity)))
+        when(mapper.toDTOs(List.of(entity)))
                 .thenReturn(List.of(dto));
 
         List<CourseRegistryEventDTO> result = service.getEventsFromPastDays(pastDays);
 
         assertThat(result).hasSize(1).contains(dto);
-        verify(repository, times(1)).findByCreatedDateAfter(any(LocalDateTime.class));
-        verify(mapper, times(1)).toCourseRegistryEventDTOs(List.of(entity));
+        verify(repository, times(1)).findByAffectedTableAndCreatedDateAfter(any(String.class), any(LocalDateTime.class));
+        verify(mapper, times(1)).toDTOs(List.of(entity));
     }
 
     @Test
     void getEventsFromPastDays_shouldReturnEmptyList_whenNoEventsFound() {
-        when(repository.findByCreatedDateAfter(any(LocalDateTime.class)))
+        when(repository.findByAffectedTableAndCreatedDateAfter(any(String.class), any(LocalDateTime.class)))
                 .thenReturn(Collections.emptyList());
-        when(mapper.toCourseRegistryEventDTOs(Collections.emptyList()))
+        when(mapper.toDTOs(Collections.emptyList()))
                 .thenReturn(Collections.emptyList());
 
         List<CourseRegistryEventDTO> result = service.getEventsFromPastDays(10);
 
         assertThat(result).isEmpty();
-        verify(repository, times(1)).findByCreatedDateAfter(any(LocalDateTime.class));
-        verify(mapper, times(1)).toCourseRegistryEventDTOs(Collections.emptyList());
+        verify(repository, times(1)).findByAffectedTableAndCreatedDateAfter(any(String.class), any(LocalDateTime.class));
+        verify(mapper, times(1)).toDTOs(Collections.emptyList());
     }
 
     @Test
