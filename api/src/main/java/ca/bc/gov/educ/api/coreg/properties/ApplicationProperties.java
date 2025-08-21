@@ -21,4 +21,9 @@ public class ApplicationProperties {
   @Value("${nats.maxReconnect}")
   Integer natsMaxReconnect;
 
+  @Value("${scheduler.read-coreg-events.threshold}")
+  Integer readCoregEventsThreshold;
+
+  @Value("${scheduler.publish-coreg-events.threshold}")
+  Integer publishCoregEventsThreshold;
 }

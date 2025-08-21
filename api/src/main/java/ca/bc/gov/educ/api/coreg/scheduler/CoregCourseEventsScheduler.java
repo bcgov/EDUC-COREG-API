@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @Slf4j
 public class CoregCourseEventsScheduler {
@@ -19,10 +17,14 @@ public class CoregCourseEventsScheduler {
         this.courseRegistryEventService = courseRegistryEventService;
     }
 
-    @Scheduled(fixedRate = 180000) // Runs every 3 minutes
-    @SchedulerLock(name = "READ_COREG_EVENTS", lockAtMostFor = "2m", lockAtLeastFor = "1m")
-    public void pullCoregEvents() {
-       log.debug("Running scheduled task [READ_COREG_EVENTS] " + java.time.LocalDateTime.now());
-       courseRegistryEventService.readCourseRegistryEvents();
+    @Scheduled(fixedRateString = "${scheduler.read-coreg-events.rate}") // Runs every 3 minutes
+    @SchedulerLock(name = "READ_COREG_EVENTS", lockAtLeastFor = "${scheduler.read-coreg-events.lockAtLeastFor}", lockAtMostFor = "${scheduler.read-coreg-events.lockAtMostFor}")
+    public void readCoregEvents() {
+        log.debug("Running scheduled task [READ_COREG_EVENTS] " + java.time.LocalDateTime.now());
+        try {
+            courseRegistryEventService.readCourseRegistryEvents();
+        } catch (Exception e) {
+            log.error("Error while reading course registry events", e);
+        }
     }
 }

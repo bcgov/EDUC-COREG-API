@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -40,11 +39,14 @@ public class CoregCourseEvent {
     @Column(name = "EVENT_TYPE", length = 100, nullable = false)
     private String eventType;
 
-    @Column(name = "CRSREGEV_ID", nullable = false)
+    @Column(name = "CRSREGEV_ID")
     private Long crsregevId;
 
     @Column(name = "SAGA_ID", columnDefinition = "RAW(16)")
     private UUID sagaId;
+
+    @Column(name = "ACTIVITY_CODE")
+    private String activityCode;
 
     @Column(name = "EVENT_OUTCOME", length = 100, nullable = false)
     private String eventOutcome;
@@ -52,15 +54,15 @@ public class CoregCourseEvent {
     @Column(name = "REPLY_CHANNEL", length = 100)
     private String replyChannel;
 
-    @Column(name = "CREATE_USER", length = 32)
+    @Column(name = "CREATE_USER", length = 100)
     private String createUser;
 
     @Column(name = "CREATE_DATE", insertable = false, updatable = false)
     private LocalDateTime createDate;
 
-    @Column(name = "UPDATE_USER", length = 32)
+    @Column(name = "UPDATE_USER", length = 100)
     private String updateUser;
 
-    @Column(name = "UPDATE_DATE", insertable = false, updatable = false)
+    @Column(name = "UPDATE_DATE", insertable = false)
     private LocalDateTime updateDate;
 }

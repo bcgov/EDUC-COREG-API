@@ -7,11 +7,9 @@ import ca.bc.gov.educ.api.coreg.constants.v1.EventType;
 import ca.bc.gov.educ.api.coreg.mapper.v1.CourseRegistryEventMapper;
 import ca.bc.gov.educ.api.coreg.messaging.jetstream.Publisher;
 import ca.bc.gov.educ.api.coreg.model.v1.CoregCourseEvent;
-import ca.bc.gov.educ.api.coreg.model.v1.CoregStatusEvent;
 import ca.bc.gov.educ.api.coreg.model.v1.CourseRegistryEventDTO;
 import ca.bc.gov.educ.api.coreg.repository.v1.CoregCourseEventRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseRegistryEventRepository;
-import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -63,20 +60,15 @@ public class CourseRegistryEventService {
                             .eventStatus(EventStatus.DB_COMMITTED.name())
                             .eventType(EventType.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name())
                             .createUser("COREG-SCHEDULER")
+                            .updateUser("COREG-SCHEDULER")
                             .eventOutcome(EventOutcome.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name())
+                            .activityCode(ActivityCode.COREG_EVENT.name())
                             .build();
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
                 // save them in COREG_COURSE_EVENTS table if the record doesn't exist
                 coregCourseEventRepository.save(coregCourseEvent);
-                /*publisher.dispatchChoreographyEvent(CoregStatusEvent.builder()
-                                .eventPayloadBytes("Payload here".getBytes())
-                                .eventType(EventType.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name())
-                                .eventStatus(EventStatus.MESSAGE_PUBLISHED.name())
-                                .eventOutcome(EventType.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name())
-                                .activityCode(ActivityCode.COREG_EVENT.name())
-                                .build());*/
             }
         });
     }

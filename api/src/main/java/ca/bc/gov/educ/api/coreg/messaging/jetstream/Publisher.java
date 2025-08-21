@@ -73,6 +73,7 @@ public class Publisher {
             choreographedEvent.setEventOutcome(EventOutcome.valueOf(event.getEventOutcome()));
             choreographedEvent.setEventPayload(new String(event.getEventPayload(), StandardCharsets.UTF_8));
             choreographedEvent.setEventID(event.getCoregCourseEventId().toString());
+            choreographedEvent.setActivityCode(event.getActivityCode());
             choreographedEvent.setCreateUser(event.getCreateUser());
             choreographedEvent.setUpdateUser(event.getUpdateUser());
             try {

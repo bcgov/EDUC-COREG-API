@@ -82,6 +82,15 @@ oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map
   --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" \
   --from-literal=NATS_MAX_RECONNECT=60 \
   --from-literal=NATS_URL=$NATS_URL \
+  --from-literal=READ_COREG_EVENTS_RATE=3600000 \
+  --from-literal=READ_COREG_EVENTS_LOCK_AT_LEAST_FOR=PT1M \
+  --from-literal=READ_COREG_EVENTS_LOCK_AT_MOST_FOR=PT5M \
+  --from-literal=READ_COREG_EVENTS_THRESHOLD=1000 \
+  --from-literal=PUBLISH_COREG_EVENTS_RATE=300000 \
+  --from-literal=PUBLISH_COREG_EVENTS_LOCK_AT_LEAST_FOR=PT1M \
+  --from-literal=PUBLISH_COREG_EVENTS_LOCK_AT_MOST_FOR=PT5M \
+  --from-literal=PUBLISH_COREG_EVENTS_THRESHOLD=1000 \
+  --from-literal=ENABLE_FLYWAY="true" \
   --dry-run -o yaml | oc apply -f -
 
 echo
