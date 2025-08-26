@@ -67,8 +67,8 @@ class CourseRegistryEventServiceTest {
         List<CourseRegistryEventEntity> entities = List.of(entity);
         List<CourseRegistryEventDTO> dtos = List.of(dto);
 
-        when(courseRegistryEventRepository.findByAffectedTableAndCreatedDateAfter(
-                eq("CRSE_COURSES"), any(LocalDateTime.class)))
+        when(courseRegistryEventRepository.findByCreatedDateAfter(
+                any(LocalDateTime.class)))
                 .thenReturn(entities);
         when(courseRegistryEventMapper.toDTOs(entities)).thenReturn(dtos);
 
@@ -87,8 +87,8 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(41L);
 
-        when(courseRegistryEventRepository.findByAffectedTableAndCreatedDateAfter(
-                eq("CRSE_COURSES"), any(LocalDateTime.class)))
+        when(courseRegistryEventRepository.findByCreatedDateAfter(
+                any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
         when(courseRegistryEventMapper.toDTOs(any())).thenReturn(List.of(dto));
@@ -110,8 +110,8 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(42L);
 
-        when(courseRegistryEventRepository.findByAffectedTableAndCreatedDateAfter(
-                eq("CRSE_COURSES"), any(LocalDateTime.class)))
+        when(courseRegistryEventRepository.findByCreatedDateAfter(
+                any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
         when(courseRegistryEventMapper.toDTOs(any())).thenReturn(List.of(dto));
@@ -132,8 +132,8 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(43L);
 
-        when(courseRegistryEventRepository.findByAffectedTableAndCreatedDateAfter(
-                eq("CRSE_COURSES"), any(LocalDateTime.class)))
+        when(courseRegistryEventRepository.findByCreatedDateAfter(
+                any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
         when(courseRegistryEventMapper.toDTOs(any())).thenReturn(List.of(dto));
