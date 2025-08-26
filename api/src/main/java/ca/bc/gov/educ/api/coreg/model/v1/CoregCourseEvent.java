@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "COREG_COURSE_EVENTS")
+@Table(name = "COREG_COURSE_EVENT")
 @Data
 @Builder
 @NoArgsConstructor

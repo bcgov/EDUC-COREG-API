@@ -11,5 +11,8 @@ public interface CourseRegistryEventRepository extends JpaRepository<CourseRegis
     @EntityGraph(attributePaths = "dataSourceEntities")
     List<CourseRegistryEventEntity> findByAffectedTableAndCreatedDateAfter(
             String affectedTable, LocalDateTime fromDate);
+
+    @EntityGraph(attributePaths = "dataSourceEntities")
+    List<CourseRegistryEventEntity> findByCreatedDateAfter(LocalDateTime fromDate);
 }
 

@@ -40,7 +40,7 @@ public class CourseRegistryEventService {
 
         LocalDateTime fromDate = LocalDateTime.now().minusDays(pastDays);
         return courseRegistryEventMapper.toDTOs(courseRegistryEventRepository
-                .findByAffectedTableAndCreatedDateAfter("CRSE_COURSES", fromDate));
+                .findByCreatedDateAfter(fromDate));
     }
 
     public void readCourseRegistryEvents() {
@@ -67,7 +67,7 @@ public class CourseRegistryEventService {
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
-                // save them in COREG_COURSE_EVENTS table if the record doesn't exist
+                // save them in COREG_COURSE_EVENT table if the record doesn't exist
                 coregCourseEventRepository.save(coregCourseEvent);
             }
         });
