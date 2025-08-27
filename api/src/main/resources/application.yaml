@@ -17,6 +17,19 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+
+  flyway:
+    enabled: ${ENABLE_FLYWAY}
+    baseline-on-migrate: true
+    table: FLYWAY_SCHEMA_HISTORY
+    url: ${JDBC_URL}
+    schema: ${DB_USERNAME}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    location: classpath:db/migration
   #Keycloak/OAuth properties
   security:
     oauth2:
@@ -86,3 +99,16 @@ springdoc:
 nats:
   url: ${NATS_URL}
   maxReconnect: ${NATS_MAX_RECONNECT}
+
+#Scheduler
+scheduler:
+  read-coreg-events:
+    rate: ${READ_COREG_EVENTS_RATE}
+    lockAtLeastFor: ${READ_COREG_EVENTS_LOCK_AT_LEAST_FOR}
+    lockAtMostFor: ${READ_COREG_EVENTS_LOCK_AT_MOST_FOR}
+    threshold: ${READ_COREG_EVENTS_THRESHOLD}
+  publish-coreg-events:
+    rate: ${PUBLISH_COREG_EVENTS_RATE}
+    lockAtLeastFor: ${PUBLISH_COREG_EVENTS_LOCK_AT_LEAST_FOR}
+    lockAtMostFor: ${PUBLISH_COREG_EVENTS_LOCK_AT_MOST_FOR}
+    threshold: ${PUBLISH_COREG_EVENTS_THRESHOLD}

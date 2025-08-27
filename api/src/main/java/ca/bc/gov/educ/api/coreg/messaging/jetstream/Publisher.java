@@ -3,7 +3,7 @@ package ca.bc.gov.educ.api.coreg.messaging.jetstream;
 import ca.bc.gov.educ.api.coreg.constants.v1.EventOutcome;
 import ca.bc.gov.educ.api.coreg.constants.v1.EventType;
 import ca.bc.gov.educ.api.coreg.model.v1.ChoreographedEvent;
-import ca.bc.gov.educ.api.coreg.model.v1.CoregStatusEvent;
+import ca.bc.gov.educ.api.coreg.model.v1.CoregCourseEvent;
 import ca.bc.gov.educ.api.coreg.properties.ApplicationProperties;
 import ca.bc.gov.educ.api.coreg.util.JsonUtil;
 import io.nats.client.Connection;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static ca.bc.gov.educ.api.coreg.constants.v1.Topics.COREG_EVENTS_TOPIC;
 
@@ -58,28 +59,27 @@ public class Publisher {
                 log.info("exception", exception);
             }
         }
-
     }
-
 
     /**
      * Dispatch choreography event.
      *
      * @param event the event
      */
-    public void dispatchChoreographyEvent(final CoregStatusEvent event) {
-        if (event != null && event.getEventId() != null) {
+    public void dispatchChoreographyEvent(final CoregCourseEvent event) {
+        if (event != null && event.getCoregCourseEventId() != null) {
             val choreographedEvent = new ChoreographedEvent();
             choreographedEvent.setEventType(EventType.valueOf(event.getEventType()));
             choreographedEvent.setEventOutcome(EventOutcome.valueOf(event.getEventOutcome()));
-            choreographedEvent.setEventPayload(event.getEventPayload());
-            choreographedEvent.setEventID(event.getEventId().toString());
+            choreographedEvent.setEventPayload(new String(event.getEventPayload(), StandardCharsets.UTF_8));
+            choreographedEvent.setEventID(event.getCoregCourseEventId().toString());
+            choreographedEvent.setActivityCode(event.getActivityCode());
             choreographedEvent.setCreateUser(event.getCreateUser());
             choreographedEvent.setUpdateUser(event.getUpdateUser());
             try {
                 log.info("Broadcasting event :: {}", choreographedEvent);
                 val pub = this.jetStream.publishAsync(COREG_EVENTS_TOPIC.toString(), JsonUtil.getJsonBytesFromObject(choreographedEvent));
-                pub.thenAcceptAsync(result -> log.info("Event ID :: {} Published to JetStream :: {}", event.getEventId(), result.getSeqno()));
+                pub.thenAcceptAsync(result -> log.info("Event ID :: {} Published to JetStream :: {}", event.getCoregCourseEventId(), result.getSeqno()));
             } catch (IOException e) {
                 log.error("exception while broadcasting message to JetStream", e);
             }

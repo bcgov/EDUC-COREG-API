@@ -26,5 +26,6 @@ public class Event {
     private String eventPayload;
     private String payloadVersion;
     private UUID sagaId;
+    private String activityCode;
 
 }
