@@ -1,12 +1,14 @@
 package ca.bc.gov.educ.api.coreg.service.v1;
 
 import ca.bc.gov.educ.api.coreg.model.v1.ChoreographedEvent;
-import ca.bc.gov.educ.api.coreg.repository.v1.CoregStatusEventRepository;
+import ca.bc.gov.educ.api.coreg.repository.v1.CoregCourseEventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static ca.bc.gov.educ.api.coreg.constants.v1.EventStatus.MESSAGE_PUBLISHED;
@@ -18,17 +20,17 @@ import static ca.bc.gov.educ.api.coreg.constants.v1.EventStatus.MESSAGE_PUBLISHE
 @Slf4j
 public class JetStreamEventHandlerService {
 
-    private final CoregStatusEventRepository coregStatusEventRepository;
+    private final CoregCourseEventRepository coregCourseEventRepository;
 
 
     /**
      * Instantiates a new Stan event handler service.
      *
-     * @param coregStatusEventRepository the coreg status event repository
+     * @param coregCourseEventRepository the coreg course event repository
      */
     @Autowired
-    public JetStreamEventHandlerService(CoregStatusEventRepository coregStatusEventRepository) {
-        this.coregStatusEventRepository = coregStatusEventRepository;
+    public JetStreamEventHandlerService(CoregCourseEventRepository coregCourseEventRepository) {
+        this.coregCourseEventRepository = coregCourseEventRepository;
     }
 
     /**
@@ -40,11 +42,15 @@ public class JetStreamEventHandlerService {
     public void updateEventStatus(ChoreographedEvent choreographedEvent) {
         if (choreographedEvent != null && choreographedEvent.getEventID() != null) {
             var eventID = UUID.fromString(choreographedEvent.getEventID());
-            var eventOptional = coregStatusEventRepository.findById(eventID);
+            var eventOptional = coregCourseEventRepository.findById(eventID);
             if (eventOptional.isPresent()) {
                 var coregEvent = eventOptional.get();
+                coregEvent.setEventStatus(MESSAGE_PUBLISHED.name());
+                coregEvent.setUpdateUser("COREG-SCHEDULER");
+                coregEvent.setUpdateDate(LocalDateTime.now());
+                coregCourseEventRepository.save(coregEvent);
                 coregEvent.setEventStatus(MESSAGE_PUBLISHED.toString());
-                coregStatusEventRepository.save(coregEvent);
+                coregCourseEventRepository.save(coregEvent);
             }
         }
     }
