@@ -51,16 +51,12 @@ public class JetStreamEventScheduler {
                 if (count++ < applicationProperties.getPublishCoregEventsThreshold()) {
                     try {
                         publisher.dispatchChoreographyEvent(el);
-                        el.setEventStatus(MESSAGE_PUBLISHED.name());
-                        el.setUpdateUser("COREG-SCHEDULER");
-                        el.setUpdateDate(LocalDateTime.now());
-                        coregCourseEventRepository.save(el);
                     } catch (final Exception ex) {
                         log.error("Exception while trying to publish COREG Course Event", ex);
                     }
                 }
             }
-            log.debug("PUBLISH_TRAX_UPDATED_EVENTS_TO_JET_STREAM: processing is completed");
+            log.debug("PUBLISH_COREG_EVENTS: processing is completed");
         }
     }
 }
