@@ -9,12 +9,17 @@ import ca.bc.gov.educ.api.coreg.messaging.jetstream.Publisher;
 import ca.bc.gov.educ.api.coreg.model.v1.CoregCourseEvent;
 import ca.bc.gov.educ.api.coreg.model.v1.CourseRegistryEventDTO;
 import ca.bc.gov.educ.api.coreg.repository.v1.CoregCourseEventRepository;
+import ca.bc.gov.educ.api.coreg.repository.v1.CourseCodeMappingRepository;
 import ca.bc.gov.educ.api.coreg.repository.v1.CourseRegistryEventRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +31,7 @@ public class CourseRegistryEventService {
 
     private final CourseRegistryEventRepository courseRegistryEventRepository;
     private final CoregCourseEventRepository coregCourseEventRepository;
+    private final CourseCodeMappingRepository courseCodeMappingRepository;
     private final CourseRegistryEventMapper courseRegistryEventMapper;
     private final Publisher publisher;
     private final ObjectMapper objectMapper;
@@ -49,11 +55,28 @@ public class CourseRegistryEventService {
 
         courseRegistryEvents.forEach(courseRegistryEvent -> {
             log.debug("Event type: " + EventType.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name());
+            
             // Check if exists in the table
             Optional<CoregCourseEvent> existingEvent = coregCourseEventRepository.findFirstByCrsregevIdOrderByCreateDateDesc(courseRegistryEvent.getId());
             CoregCourseEvent coregCourseEvent = null;
             if (existingEvent.isEmpty()) {
                 try {
+                    BigInteger courseID = toUnsignedBigInteger(courseRegistryEvent.getId());
+                    var course = courseCodeMappingRepository.findByCoursesEntity_CourseIDAndOriginatingSystem(courseID,"39");
+                    if(course.isPresent()){
+                        String courseCode = null;
+                        String courseLevel = null;
+                        var code = course.get().getExternalCode();
+                        if(StringUtils.isNotBlank(code) && code.length() < 6) {
+                            courseCode = code;
+                        }else if(StringUtils.isNotBlank(code) && code.length() > 5) {
+                            courseCode = code.substring(0, 4);
+                            courseLevel = code.substring(5);
+                        }
+                        courseRegistryEvent.setCourseCode(courseCode);
+                        courseRegistryEvent.setCourseLevel(courseLevel); 
+                    }
+ 
                     coregCourseEvent = CoregCourseEvent.builder()
                             .crsregevId(courseRegistryEvent.getId())
                             .eventPayload(objectMapper.writeValueAsBytes(courseRegistryEvent)) // will be stored as bytes
@@ -71,5 +94,18 @@ public class CourseRegistryEventService {
                 coregCourseEventRepository.save(coregCourseEvent);
             }
         });
+    }
+
+    private static BigInteger toUnsignedBigInteger(long i) {
+        if (i >= 0L)
+            return BigInteger.valueOf(i);
+        else {
+            int upper = (int) (i >>> 32);
+            int lower = (int) i;
+
+            // return (upper << 32) + lower
+            return (BigInteger.valueOf(Integer.toUnsignedLong(upper))).shiftLeft(32).
+                    add(BigInteger.valueOf(Integer.toUnsignedLong(lower)));
+        }
     }
 }

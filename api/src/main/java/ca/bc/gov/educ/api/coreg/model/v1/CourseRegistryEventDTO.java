@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseRegistryEventDTO {
+    private String courseCode;
+    private String courseLevel;
     private Long id;
     private String affectedTable;
     private Long affectedId;

@@ -5,6 +5,7 @@ import ca.bc.gov.educ.api.coreg.struct.v1.CourseCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,5 +14,7 @@ import java.util.UUID;
 public interface CourseCodeMappingRepository extends JpaRepository<CourseCodeEntity, String> {
 
     List<CourseCodeEntity> findByExternalCode(String externalCode);
+
+    Optional<CourseCodeEntity> findByCoursesEntity_CourseIDAndOriginatingSystem(BigInteger courseID, String originatingSystem);
 
 }

@@ -6,10 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigInteger;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +17,8 @@ import java.util.UUID;
 @DynamicUpdate
 @Table(name = "CRSE_COURSE_CODE_MAPPINGS" , schema = "COREG")
 public class CourseCodeEntity {
-
-
+    
+    
     @Id
     @Column(name = "CRSCDMAP_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
     private BigInteger crscdmapID;
