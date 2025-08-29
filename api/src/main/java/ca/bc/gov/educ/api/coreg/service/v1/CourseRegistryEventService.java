@@ -61,7 +61,7 @@ public class CourseRegistryEventService {
             CoregCourseEvent coregCourseEvent = null;
             if (existingEvent.isEmpty()) {
                 try {
-                    BigInteger courseID = toUnsignedBigInteger(courseRegistryEvent.getId());
+                    BigInteger courseID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
                     var course = courseCodeMappingRepository.findByCoursesEntity_CourseIDAndOriginatingSystem(courseID,"39");
                     if(course.isPresent()){
                         String courseCode = null;
