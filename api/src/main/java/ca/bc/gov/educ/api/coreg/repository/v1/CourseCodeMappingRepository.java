@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CourseCodeMappingRepository extends JpaRepository<CourseCodeEntity, String> {
+public interface CourseCodeMappingRepository extends JpaRepository<CourseCodeEntity, BigInteger> {
 
     List<CourseCodeEntity> findByExternalCode(String externalCode);
 

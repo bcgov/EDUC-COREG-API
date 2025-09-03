@@ -35,9 +35,7 @@ public class CourseInformationService {
     private final CourseMappingRepository courseMappingRepository;
 
     public CoursesEntity getCourseInformation(String courseID) {
-        val optionalCoursesEntity = courseInformationRepository.findById(new BigInteger(courseID));
-        optionalCoursesEntity.orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID));
-        return optionalCoursesEntity.get();
+        return courseInformationRepository.findById(new BigInteger(courseID)).orElseThrow(() -> new EntityNotFoundException(CoursesEntity.class, "courseID", courseID));
     }
 
     public List<CourseMappingEntity> getAllCourseMappingsByOriginatingSystem(String originatingSystemID) {
