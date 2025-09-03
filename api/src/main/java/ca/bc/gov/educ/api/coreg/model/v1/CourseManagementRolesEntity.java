@@ -15,7 +15,7 @@ import java.math.BigInteger;
 @Builder
 @Entity
 @DynamicUpdate
-@Table(name = "CRSE_COURSE_STATUSES" , schema = "COREG")
+@Table(name = "CRSE_COURSE_MANAGEMENT_ROLES" , schema = "COREG")
 public class CourseManagementRolesEntity {
     @Id
     @Column(name = "CRSMRL_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
