@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.coreg.scheduler;
 
+import ca.bc.gov.educ.api.coreg.messaging.jetstream.Publisher;
 import ca.bc.gov.educ.api.coreg.service.v1.CourseRegistryEventService;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ class CoregCourseEventsSchedulerTest {
 
     private CourseRegistryEventService courseRegistryEventService;
     private CoregCourseEventsScheduler scheduler;
+    private Publisher publisher;
 
     private final TestLogger log = TestLoggerFactory.getTestLogger(CoregCourseEventsScheduler.class);
     // ...
@@ -33,7 +35,7 @@ class CoregCourseEventsSchedulerTest {
     void setUp() {
         logCaptor = LogCaptor.forClass(CoregCourseEventsScheduler.class);
         courseRegistryEventService = mock(CourseRegistryEventService.class);
-        scheduler = new CoregCourseEventsScheduler(courseRegistryEventService);
+        scheduler = new CoregCourseEventsScheduler(courseRegistryEventService, publisher);
     }
 
     @Test

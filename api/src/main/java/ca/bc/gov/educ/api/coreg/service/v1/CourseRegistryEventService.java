@@ -56,11 +56,11 @@ public class CourseRegistryEventService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<Event> readCourseRegistryEvents() {
+    public List<CoregCourseEvent> readCourseRegistryEvents() {
         //Get Course registry events
         List<CourseRegistryEventDTO> courseRegistryEvents = getEventsFromPastDays(30);
         
-        List<Event> events = new ArrayList<>();
+        List<CoregCourseEvent> events = new ArrayList<>();
 
         courseRegistryEvents.forEach(courseRegistryEvent -> {
             log.debug("Event type: " + EventType.fromCode(courseRegistryEvent.getRegistryEventTypeCharId()).name());
@@ -96,7 +96,7 @@ public class CourseRegistryEventService {
         return events;
     }
 
-    private void setValuesForCourseGradProgamCourseChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseGradProgamCourseChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseGradProgramID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var gradProgram = graduationProgramCourseRepository.findById(courseGradProgramID);
         if(gradProgram.isPresent()) {
@@ -105,7 +105,7 @@ public class CourseRegistryEventService {
         }
     }
 
-    private void setValuesForCourseManagementRoleChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseManagementRoleChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseManagementRoleID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var courseManagementRole = courseManagementRolesRepository.findById(courseManagementRoleID);
         if(courseManagementRole.isPresent()) {
@@ -114,7 +114,7 @@ public class CourseRegistryEventService {
         }
     }
 
-    private void setValuesForCourseAllowableCreditsChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseAllowableCreditsChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseAllowableCreditID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var courseAllowableCredits = courseAllowableCreditsRepository.findById(courseAllowableCreditID);
         if(courseAllowableCredits.isPresent()) {
@@ -123,13 +123,13 @@ public class CourseRegistryEventService {
         }
     }
 
-    private void setValuesForCourseCodeMappingChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseCodeMappingChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseCodeMappingID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var course = courseCodeMappingRepository.findById(courseCodeMappingID);
         setFinalCourseCodeAndLevelValues(course, courseRegistryEvent, events);
     }
     
-    private void setValuesForCourseStatusChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseStatusChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseStatusID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var courseStatus = courseStatusRepository.findById(courseStatusID);
         if(courseStatus.isPresent()) {
@@ -138,13 +138,13 @@ public class CourseRegistryEventService {
         }
     }
 
-    private void setValuesForCourseChange(CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setValuesForCourseChange(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         BigInteger courseID = toUnsignedBigInteger(courseRegistryEvent.getAffectedId());
         var course = courseCodeMappingRepository.findByCoursesEntity_CourseIDAndOriginatingSystem(courseID,"39");
         setFinalCourseCodeAndLevelValues(course, courseRegistryEvent, events);
     }
 
-    private void createAndSendEvent(CourseRegistryEventDTO courseRegistryEvent, List<Event> events) {
+    private void createAndSendEvent(CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events) {
         try {
             var coregCourseEvent = CoregCourseEvent.builder()
                     .crsregevId(courseRegistryEvent.getId())
@@ -157,14 +157,13 @@ public class CourseRegistryEventService {
                     .activityCode(ActivityCode.COREG_EVENT.name())
                     .build();
             
-            var savedEvent = coregCourseEventRepository.save(coregCourseEvent);
-            publisher.dispatchChoreographyEvent(savedEvent);
+            events.add(coregCourseEventRepository.save(coregCourseEvent));
         } catch (JsonProcessingException e) {
             throw new CoregAPIRuntimeException(e.getMessage());
         }
     }
     
-    private void setFinalCourseCodeAndLevelValues(Optional<CourseCodeEntity> course, CourseRegistryEventDTO courseRegistryEvent, List<Event> events){
+    private void setFinalCourseCodeAndLevelValues(Optional<CourseCodeEntity> course, CourseRegistryEventDTO courseRegistryEvent, List<CoregCourseEvent> events){
         if(course.isPresent()){
             String courseCode = null;
             String courseLevel = null;
