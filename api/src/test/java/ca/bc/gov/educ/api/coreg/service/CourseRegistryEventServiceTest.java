@@ -67,7 +67,7 @@ class CourseRegistryEventServiceTest {
         List<CourseRegistryEventEntity> entities = List.of(entity);
         List<CourseRegistryEventDTO> dtos = List.of(dto);
 
-        when(courseRegistryEventRepository.findByCreatedDateAfter(
+        when(courseRegistryEventRepository.findByCreatedDateAfterOrderByCreatedDateAsc(
                 any(LocalDateTime.class)))
                 .thenReturn(entities);
         when(courseRegistryEventMapper.toDTOs(entities)).thenReturn(dtos);
@@ -87,7 +87,7 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(41L);
 
-        when(courseRegistryEventRepository.findByCreatedDateAfter(
+        when(courseRegistryEventRepository.findByCreatedDateAfterOrderByCreatedDateAsc(
                 any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
@@ -110,7 +110,7 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(42L);
 
-        when(courseRegistryEventRepository.findByCreatedDateAfter(
+        when(courseRegistryEventRepository.findByCreatedDateAfterOrderByCreatedDateAsc(
                 any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
@@ -132,7 +132,7 @@ class CourseRegistryEventServiceTest {
         dto.setId(12345L);
         dto.setRegistryEventTypeCharId(43L);
 
-        when(courseRegistryEventRepository.findByCreatedDateAfter(
+        when(courseRegistryEventRepository.findByCreatedDateAfterOrderByCreatedDateAsc(
                 any(LocalDateTime.class)))
                 .thenReturn(List.of(new CourseRegistryEventEntity()));
 
