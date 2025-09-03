@@ -176,8 +176,8 @@ public class CourseRegistryEventService {
             }
             courseRegistryEvent.setCourseCode(courseCode);
             courseRegistryEvent.setCourseLevel(courseLevel);
+            createAndSendEvent(courseRegistryEvent, events);
         }
-        createAndSendEvent(courseRegistryEvent, events);
     }
 
     private static BigInteger toUnsignedBigInteger(long i) {
