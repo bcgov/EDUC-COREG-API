@@ -52,7 +52,7 @@ public class CourseRegistryEventService {
 
         LocalDateTime fromDate = LocalDateTime.now().minusDays(pastDays);
         return courseRegistryEventMapper.toDTOs(courseRegistryEventRepository
-                .findByCreatedDateAfter(fromDate));
+                .findByCreatedDateAfterOrderByCreatedDateAsc(fromDate));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
