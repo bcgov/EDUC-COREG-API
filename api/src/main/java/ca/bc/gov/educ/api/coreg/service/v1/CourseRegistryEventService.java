@@ -171,7 +171,7 @@ public class CourseRegistryEventService {
             if(StringUtils.isNotBlank(code) && code.length() < 6) {
                 courseCode = code;
             }else if(StringUtils.isNotBlank(code) && code.length() > 5) {
-                courseCode = code.substring(0, 4);
+                courseCode = code.substring(0, 5);
                 courseLevel = code.substring(5);
             }
             courseRegistryEvent.setCourseCode(courseCode);
