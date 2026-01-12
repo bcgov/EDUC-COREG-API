@@ -78,7 +78,7 @@ oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map
   --from-literal=APP_LOG_LEVEL=INFO \
   --from-literal=SPRING_BOOT_AUTOCONFIG_LOG_LEVEL=INFO \
   --from-literal=SPRING_SHOW_REQUEST_DETAILS=false \
-  --from-literal=SPRING_JPA_SHOW_SQL="true" \
+  --from-literal=SPRING_JPA_SHOW_SQL="false" \
   --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" \
   --from-literal=NATS_MAX_RECONNECT=60 \
   --from-literal=NATS_URL=$NATS_URL \
