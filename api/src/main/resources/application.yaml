@@ -68,7 +68,16 @@ logging:
             api:
               coreg: ${APP_LOG_LEVEL}
     org:
+      hibernate:
+        SQL: DEBUG
+        orm:
+          jdbc:
+            bind: TRACE
       springframework:
+        data:
+          jpa:
+            repository:
+              query: DEBUG
         web: ${SPRING_WEB_LOG_LEVEL}
         security: ${SPRING_SECURITY_LOG_LEVEL}
         boot:
