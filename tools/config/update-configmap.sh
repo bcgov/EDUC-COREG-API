@@ -82,11 +82,20 @@ oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map
   --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" \
   --from-literal=NATS_MAX_RECONNECT=60 \
   --from-literal=NATS_URL=$NATS_URL \
+  --from-literal=READ_COREG_EVENTS_RATE=60000 \
+  --from-literal=READ_COREG_EVENTS_LOCK_AT_LEAST_FOR=PT1M \
+  --from-literal=READ_COREG_EVENTS_LOCK_AT_MOST_FOR=PT5M \
+  --from-literal=READ_COREG_EVENTS_THRESHOLD=1000 \
+  --from-literal=PUBLISH_COREG_EVENTS_RATE=300000 \
+  --from-literal=PUBLISH_COREG_EVENTS_LOCK_AT_LEAST_FOR=PT1M \
+  --from-literal=PUBLISH_COREG_EVENTS_LOCK_AT_MOST_FOR=PT5M \
+  --from-literal=PUBLISH_COREG_EVENTS_THRESHOLD=1000 \
+  --from-literal=ENABLE_FLYWAY="true" \
   --dry-run -o yaml | oc apply -f -
 
 echo
 echo Setting environment variables for $APP_NAME-$SOAM_KC_REALM_ID application
-oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env --from=configmap/$APP_NAME-config-map dc/$APP_NAME-$SOAM_KC_REALM_ID
+oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env --from=configmap/$APP_NAME-config-map deployment/$APP_NAME-$SOAM_KC_REALM_ID
 
 echo
 echo Creating secret for $APP_NAME-$SOAM_KC_REALM_ID application
@@ -103,4 +112,4 @@ oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-flb-sc-con
   --dry-run -o yaml | oc apply -f -
 
 echo Removing un-needed config entries
-oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env dc/"$APP_NAME"-$SOAM_KC_REALM_ID KEYCLOAK_PUBLIC_KEY-
+oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env deployment/"$APP_NAME"-$SOAM_KC_REALM_ID KEYCLOAK_PUBLIC_KEY-

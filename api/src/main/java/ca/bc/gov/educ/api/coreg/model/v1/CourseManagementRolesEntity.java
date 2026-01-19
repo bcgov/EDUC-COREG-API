@@ -15,23 +15,14 @@ import java.math.BigInteger;
 @Builder
 @Entity
 @DynamicUpdate
-@Table(name = "CRSE_COURSE_CODE_MAPPINGS" , schema = "COREG")
-public class CourseCodeEntity {
-    
-    
+@Table(name = "CRSE_COURSE_MANAGEMENT_ROLES" , schema = "COREG")
+public class CourseManagementRolesEntity {
     @Id
-    @Column(name = "CRSCDMAP_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
-    private BigInteger crscdmapID;
+    @Column(name = "CRSMRL_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
+    private BigInteger crsManagementRoleID;
 
     @ManyToOne(optional = true, targetEntity = CoursesEntity.class)
     @JoinColumn(name = "CRS_ID", referencedColumnName = "CRS_ID")
     CoursesEntity coursesEntity;
-
-    @Basic
-    @Column(name = "EXTERNAL_CODE")
-    private String externalCode;
-
-    @Basic
-    @Column(name = "ORIGINATING_SYSTEM_CHAR_ID")
-    private Integer originatingSystem;
+    
 }

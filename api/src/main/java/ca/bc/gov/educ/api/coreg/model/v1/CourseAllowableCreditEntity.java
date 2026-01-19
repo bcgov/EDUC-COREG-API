@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @Table(name = "CRSE_COURSE_ALLOWABLE_CREDITS" , schema = "COREG")
 public class CourseAllowableCreditEntity {
-
-
+    
     @Id
     @Column(name = "CAC_ID", unique = true, updatable = false, columnDefinition = "BIGINTEGER")
     private BigInteger cacID;

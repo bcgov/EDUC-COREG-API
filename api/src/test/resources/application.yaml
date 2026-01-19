@@ -73,3 +73,16 @@ springdoc:
 nats:
   url: localhost
   maxReconnect: 60
+
+#Scheduler
+scheduler:
+  read-coreg-events:
+    rate: 600000
+    lockAtLeastFor: PT1M
+    lockAtMostFor: PT5M
+    threshold: 100
+  publish-coreg-events:
+    rate: 180000
+    lockAtLeastFor: PT1M
+    lockAtMostFor: PT5M
+    threshold: 100
