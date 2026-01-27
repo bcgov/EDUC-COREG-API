@@ -36,7 +36,7 @@ public class CsvReportService {
      * @throws IOException if writing to response fails
      */
     public void generateCourseReportStream(HttpServletResponse response) throws IOException {
-        log.info("Starting course CSV download generation");
+        log.debug("Starting course CSV download generation");
         long startTime = System.currentTimeMillis();
 
         List<String> headers = Arrays.stream(CourseSearchReportHeader.values())
@@ -67,7 +67,7 @@ public class CsvReportService {
             csvPrinter.flush();
 
             long endTime = System.currentTimeMillis();
-            log.info("Course CSV download completed in {} ms", (endTime - startTime));
+            log.debug("Course CSV download completed in {} ms", (endTime - startTime));
         }
     }
 
