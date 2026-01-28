@@ -16,7 +16,7 @@ public interface CourseInformationRepository extends JpaRepository<CoursesEntity
      * Fetches only required fields with single query and aggregated credits.
      * Uses streaming to avoid loading all data into memory.
      *
-     * Includes ALL courses and groups by CRS_ID to prevent duplicate rows.
+     * Includes ALL courses and groups by CRS_ID.
      * Prioritizes system 39 code mappings when available.
      *
      * @return Stream of CourseDownloadProjection
