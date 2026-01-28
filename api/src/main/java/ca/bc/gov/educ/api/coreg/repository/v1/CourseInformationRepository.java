@@ -16,34 +16,37 @@ public interface CourseInformationRepository extends JpaRepository<CoursesEntity
      * Fetches only required fields with single query and aggregated credits.
      * Uses streaming to avoid loading all data into memory.
      *
+     * Includes ALL courses and groups by CRS_ID.
+     * Prioritizes system 39 code mappings when available.
+     *
      * @return Stream of CourseDownloadProjection
      */
     @Query(value = "SELECT " +
-            "cc.EXTERNAL_CODE as externalCode, " +
+            "COALESCE(MAX(CASE WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 39 THEN cc.EXTERNAL_CODE END), " +
+            "         MAX(CASE WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 38 THEN cc.EXTERNAL_CODE END)) as externalCode, " +
             "c.COURSE_TITLE as courseTitle, " +
             "TO_CHAR(c.START_DATE, 'YYYY-MM-DD') as startDate, " +
             "TO_CHAR(c.END_DATE, 'YYYY-MM-DD') as endDate, " +
             "TO_CHAR(c.COMPLETION_END_DATE, 'YYYY-MM-DD') as completionEndDate, " +
             "c.GENERIC_CRSE_TYPE as genericCourseType, " +
             "chr.DESCRIPTION as instructionLanguage, " +
-            "LISTAGG(cac.CREDIT_VALUE, ', ') WITHIN GROUP (ORDER BY cac.CREDIT_VALUE) as credits " +
+            "LISTAGG(DISTINCT cac.CREDIT_VALUE, ', ') WITHIN GROUP (ORDER BY cac.CREDIT_VALUE) as credits " +
             "FROM COREG.CRSE_COURSES c " +
             "LEFT JOIN COREG.CRSE_COURSE_CODE_MAPPINGS cc " +
             "ON c.CRS_ID = cc.CRS_ID " +
-            "AND cc.ORIGINATING_SYSTEM_CHAR_ID = 39 " +
             "LEFT JOIN COREG.CRSE_CHARACTERISTICS chr " +
             "ON c.LANGUAGE_TYPE_CHAR_ID = chr.CHAR_ID " +
             "LEFT JOIN COREG.CRSE_COURSE_ALLOWABLE_CREDITS cac " +
             "ON c.CRS_ID = cac.CRS_ID " +
             "GROUP BY " +
-            "cc.EXTERNAL_CODE, " +
+            "c.CRS_ID, " +
             "c.COURSE_TITLE, " +
             "c.START_DATE, " +
             "c.END_DATE, " +
             "c.COMPLETION_END_DATE, " +
             "c.GENERIC_CRSE_TYPE, " +
             "chr.DESCRIPTION " +
-            "ORDER BY cc.EXTERNAL_CODE",
+            "ORDER BY c.CRS_ID",
             nativeQuery = true)
     Stream<CourseDownloadProjection> streamAllForDownload();
 }
