@@ -22,9 +22,8 @@ public interface CourseInformationRepository extends JpaRepository<CoursesEntity
      * @return Stream of CourseDownloadProjection
      */
     @Query(value = "SELECT " +
-            "MAX(CASE WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 39 THEN cc.EXTERNAL_CODE " +
-            "         WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 38 THEN cc.EXTERNAL_CODE " +
-            "         ELSE NULL END) as externalCode, " +
+            "COALESCE(MAX(CASE WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 39 THEN cc.EXTERNAL_CODE END), " +
+            "         MAX(CASE WHEN cc.ORIGINATING_SYSTEM_CHAR_ID = 38 THEN cc.EXTERNAL_CODE END)) as externalCode, " +
             "c.COURSE_TITLE as courseTitle, " +
             "TO_CHAR(c.START_DATE, 'YYYY-MM-DD') as startDate, " +
             "TO_CHAR(c.END_DATE, 'YYYY-MM-DD') as endDate, " +
